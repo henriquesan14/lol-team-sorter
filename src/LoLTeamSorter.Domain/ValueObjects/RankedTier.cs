@@ -21,8 +21,8 @@ namespace LoLTeamSorter.Domain.ValueObjects
         public int GetWeight()
         {
             int tierWeight = (int)Tier * 4;
-            int divisionWeight = Rank.HasValue ? (5 - (int)Rank.Value) : 0;
-            return tierWeight + divisionWeight;
+            int rankWeight = Rank.HasValue ? (5 - (int)Rank.Value) : 0;
+            return tierWeight + rankWeight;
         }
 
         public override string ToString()
