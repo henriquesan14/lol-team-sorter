@@ -1,4 +1,5 @@
 ﻿using LoLTeamSorter.Domain.Enums;
+using LoLTeamSorter.Domain.Exceptions;
 
 namespace LoLTeamSorter.Domain.ValueObjects
 {
@@ -12,9 +13,22 @@ namespace LoLTeamSorter.Domain.ValueObjects
             Tier = tier;
             Rank = NeedsRank(tier) ? rank ?? throw new ArgumentNullException(nameof(rank)) : null;
         }
-        public static RankedTier Of(TierEnum tier, RankEnum? rank = null)
+        public static RankedTier Of(string tier, string? rank = null)
         {
-            return new RankedTier(tier, rank);
+            if (!Enum.TryParse<TierEnum>(tier, true, out var tierEnum))
+                throw new DomainException($"Invalid tier: {tier}");
+
+            RankEnum? rankEnum = null;
+
+            if (!string.IsNullOrEmpty(rank))
+            {
+                if (!Enum.TryParse<RankEnum>(rank, true, out var parsedRank))
+                    throw new DomainException($"Invalid rank: {rank}");
+
+                rankEnum = parsedRank;
+            }
+
+            return new RankedTier(tierEnum, rankEnum);
         }
 
         private bool NeedsRank(TierEnum tier)
