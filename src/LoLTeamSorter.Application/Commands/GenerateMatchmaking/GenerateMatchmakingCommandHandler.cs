@@ -57,7 +57,7 @@ namespace LoLTeamSorter.Application.Commands.GenerateMatchmaking
             await _unitOfWork.Matchmakings.AddAsync(matchmaking);
             await _unitOfWork.CompleteAsync();
 
-            return new MatchmakingViewModel(blueTeam.ToViewModel(), redTeam.ToViewModel());
+            return matchmaking.ToViewModel();
         }
     }
 }

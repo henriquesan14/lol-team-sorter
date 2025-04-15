@@ -1,5 +1,6 @@
 ﻿using Carter;
 using LoLTeamSorter.Application.Commands.GenerateMatchmaking;
+using LoLTeamSorter.Application.Queries.GetMatchmakings;
 using MediatR;
 
 namespace LoLTeamSorte.API.Endpoints
@@ -13,6 +14,14 @@ namespace LoLTeamSorte.API.Endpoints
             group.MapPost("/", async (GenerateMatchmakingCommand command, ISender sender) =>
             {
                 var result = await sender.Send(command);
+
+                return Results.Ok(result);
+            });
+
+            group.MapGet("/", async (ISender sender) =>
+            {
+                var query = new GetMatchmakingsQuery();
+                var result = await sender.Send(query);
 
                 return Results.Ok(result);
             });
