@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LoLTeamSorter.Infra.Migrations
 {
     [DbContext(typeof(LoLTeamSorterDbContext))]
-    [Migration("20250414205619_FullMigrate")]
-    partial class FullMigrate
+    [Migration("20250415115559_MigrateFull")]
+    partial class MigrateFull
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -190,7 +190,33 @@ namespace LoLTeamSorter.Infra.Migrations
                                 .HasForeignKey("PlayerId");
                         });
 
+                    b.OwnsOne("LoLTeamSorter.Domain.ValueObjects.RiotIdentifier", "RiotIdentifier", b1 =>
+                        {
+                            b1.Property<Guid>("PlayerId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("RiotName");
+
+                            b1.Property<string>("Tag")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("RiotTag");
+
+                            b1.HasKey("PlayerId");
+
+                            b1.ToTable("Players");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PlayerId");
+                        });
+
                     b.Navigation("RankedTier")
+                        .IsRequired();
+
+                    b.Navigation("RiotIdentifier")
                         .IsRequired();
                 });
 

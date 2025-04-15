@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LoLTeamSorter.Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class FullMigrate : Migration
+    public partial class MigrateFull : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,6 +63,8 @@ namespace LoLTeamSorter.Infra.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    RiotName = table.Column<string>(type: "text", nullable: false),
+                    RiotTag = table.Column<string>(type: "text", nullable: false),
                     MainLane = table.Column<string>(type: "text", nullable: false),
                     SecondaryLane = table.Column<string>(type: "text", nullable: false),
                     Tier = table.Column<string>(type: "text", nullable: false),

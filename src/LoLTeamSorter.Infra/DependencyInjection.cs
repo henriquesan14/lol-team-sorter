@@ -12,7 +12,7 @@ namespace LoLTeamSorter.Infra
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructureServices
+        public static IServiceCollection AddInfrastructure
             (this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DbConnection");

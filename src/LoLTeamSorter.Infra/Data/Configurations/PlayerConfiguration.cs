@@ -20,6 +20,17 @@ namespace LoLTeamSorter.Infra.Data.Configurations
             builder.Property(p => p.Name)
                 .IsRequired();
 
+            builder.OwnsOne(p => p.RiotIdentifier, ri =>
+            {
+                ri.Property(x => x.Name)
+                    .HasColumnName("RiotName")
+                    .IsRequired();
+
+                ri.Property(x => x.Tag)
+                    .HasColumnName("RiotTag")
+                    .IsRequired();
+            });
+
             builder.Property(p => p.MainLane)
                 .HasConversion<string>()
                 .IsRequired();

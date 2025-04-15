@@ -2,15 +2,19 @@
 
 namespace LoLTeamSorter.Domain.ValueObjects
 {
-    public class RankedTier : IEquatable<RankedTier>
+    public record RankedTier : IEquatable<RankedTier>
     {
         public TierEnum Tier { get; private set; }
         public RankEnum? Rank { get; private set; }
 
-        public RankedTier(TierEnum tier, RankEnum? rank = null)
+        private RankedTier(TierEnum tier, RankEnum? rank = null)
         {
             Tier = tier;
             Rank = NeedsRank(tier) ? rank ?? throw new ArgumentNullException(nameof(rank)) : null;
+        }
+        public static RankedTier Of(TierEnum tier, RankEnum? rank = null)
+        {
+            return new RankedTier(tier, rank);
         }
 
         private bool NeedsRank(TierEnum tier)
@@ -29,13 +33,13 @@ namespace LoLTeamSorter.Domain.ValueObjects
             => Rank.HasValue ? $"{Tier} {Rank}" : Tier.ToString();
 
         // Equals e GetHashCode para comparar corretamente
-        public override bool Equals(object? obj) => Equals(obj as RankedTier);
+        //public override bool Equals(object? obj) => Equals(obj as RankedTier);
 
-        public bool Equals(RankedTier? other)
-        {
-            if (other is null) return false;
-            return Tier == other.Tier && Rank == other.Rank;
-        }
+        //public bool Equals(RankedTier? other)
+        //{
+        //    if (other is null) return false;
+        //    return Tier == other.Tier && Rank == other.Rank;
+        //}
 
         public override int GetHashCode() => HashCode.Combine(Tier, Rank);
     }

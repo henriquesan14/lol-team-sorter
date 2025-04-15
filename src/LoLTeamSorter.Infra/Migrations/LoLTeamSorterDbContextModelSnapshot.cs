@@ -187,7 +187,33 @@ namespace LoLTeamSorter.Infra.Migrations
                                 .HasForeignKey("PlayerId");
                         });
 
+                    b.OwnsOne("LoLTeamSorter.Domain.ValueObjects.RiotIdentifier", "RiotIdentifier", b1 =>
+                        {
+                            b1.Property<Guid>("PlayerId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("RiotName");
+
+                            b1.Property<string>("Tag")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("RiotTag");
+
+                            b1.HasKey("PlayerId");
+
+                            b1.ToTable("Players");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PlayerId");
+                        });
+
                     b.Navigation("RankedTier")
+                        .IsRequired();
+
+                    b.Navigation("RiotIdentifier")
                         .IsRequired();
                 });
 
