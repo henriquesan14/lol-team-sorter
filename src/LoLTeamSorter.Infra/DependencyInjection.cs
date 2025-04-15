@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using LoLTeamSorter.Infra.Data.Interceptors;
 using LoLTeamSorter.Application.Contracts.Data;
 using LoLTeamSorter.Infra.Data.Repositories;
+using LoLTeamSorter.Infra.ExternalServices;
+using Refit;
 
 namespace LoLTeamSorter.Infra
 {
@@ -15,6 +17,8 @@ namespace LoLTeamSorter.Infra
         public static IServiceCollection AddInfrastructure
             (this IServiceCollection services, IConfiguration configuration)
         {
+            
+
             var connectionString = configuration.GetConnectionString("DbConnection");
 
             services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
@@ -34,6 +38,23 @@ namespace LoLTeamSorter.Infra
             services.AddScoped<IMatchmakingRepository, MatchmakingRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            //Services
+            services.AddRefitClient<IRiotAccountApi>()
+                .ConfigureHttpClient(c =>
+                {
+                    c.BaseAddress = new Uri(configuration["RiotApi:AccountUrlBase"]!);
+                    c.DefaultRequestHeaders.Add("X-Riot-Token", configuration["RiotApi:ApiKey"]!);
+                });
+
+            services.AddRefitClient<IRiotLeagueApi>()
+                .ConfigureHttpClient(c =>
+                {
+                    c.BaseAddress = new Uri(configuration["RiotApi:LeagueUrlBase"]!);
+                    c.DefaultRequestHeaders.Add("X-Riot-Token", configuration["RiotApi:ApiKey"]!);
+                });
+
+            services.AddScoped<IRiotApiService, RiotApiService>();
 
             return services;
         }
