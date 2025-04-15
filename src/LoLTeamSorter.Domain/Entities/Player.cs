@@ -14,6 +14,8 @@ namespace LoLTeamSorter.Domain.Entities
         public int Stars { get; private set; } = default!;
         public string RiotId { get; private set; } = default!;
 
+        public List<Team> Teams { get; private set; } = new();
+
         public static Player Create(PlayerId id, string name, RiotIdentifier riotIdentifier, LaneEnum mainLane,
             LaneEnum secondaryLane, RankedTier rankedTier, int stars, string riotId)
         {

@@ -1,26 +1,26 @@
 ﻿using Carter;
-using LoLTeamSorter.Application.Commands.CreatePlayer;
-using LoLTeamSorter.Application.Queries.GetPlayers;
+using LoLTeamSorter.Application.Commands.GenerateMatchmaking;
+using LoLTeamSorter.Application.Queries.GetMatchmakings;
 using MediatR;
 
 namespace LoLTeamSorte.API.Endpoints
 {
-    public class PlayerEndpoints : ICarterModule
+    public class MatchmakingEndpoints : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            var group = app.MapGroup("/api/players");
+            var group = app.MapGroup("/api/matchmaking");
 
-            group.MapPost("/", async (CreatePlayerCommand command, ISender sender) =>
+            group.MapPost("/", async (GenerateMatchmakingCommand command, ISender sender) =>
             {
                 var result = await sender.Send(command);
 
-                return Results.Created($"players/{result}", result);
+                return Results.Ok(result);
             });
 
             group.MapGet("/", async (ISender sender) =>
             {
-                var query = new GetPlayersQuery();
+                var query = new GetMatchmakingsQuery();
                 var result = await sender.Send(query);
 
                 return Results.Ok(result);

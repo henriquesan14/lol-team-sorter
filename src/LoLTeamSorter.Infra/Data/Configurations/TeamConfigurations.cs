@@ -17,12 +17,10 @@ namespace LoLTeamSorter.Infra.Data.Configurations
                     value => TeamId.Of(value)
                 );
 
-            builder.Property(t => t.Name)
-                .IsRequired();
-
-            builder.HasMany(t => t.Players)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
+            builder
+                .HasMany(t => t.Players)
+                .WithMany(p => p.Teams)
+                .UsingEntity(j => j.ToTable("TeamPlayer"));
         }
     }
 }

@@ -18,9 +18,8 @@ namespace LoLTeamSorter.Infra.Data.Configurations
                 );
 
             builder.Property(m => m.Mode)
-                .IsRequired();
-
-            builder.HasMany(typeof(Player), "Players");
+                .IsRequired()
+                .HasConversion<string>();
 
             builder.HasOne(m => m.BlueTeam)
                 .WithMany()
