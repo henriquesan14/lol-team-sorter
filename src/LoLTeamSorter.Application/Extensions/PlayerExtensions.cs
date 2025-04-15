@@ -5,7 +5,17 @@ namespace LoLTeamSorter.Application.Extensions
 {
     public static class PlayerMapper
     {
-        public static PlayerViewModel ToViewModel(Player player)
+        public static IEnumerable<PlayerViewModel> ToViewModelList(this IEnumerable<Player> players)
+        {
+            return players.Select(player => EntityToViewModel(player!));
+        }
+
+        public static PlayerViewModel ToViewModel(this Player player)
+        {
+            return EntityToViewModel(player);
+        }
+
+        private static PlayerViewModel EntityToViewModel(Player player)
         {
             return new PlayerViewModel
             (

@@ -3,6 +3,7 @@ using System;
 using LoLTeamSorter.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LoLTeamSorter.Infra.Migrations
 {
     [DbContext(typeof(LoLTeamSorterDbContext))]
-    partial class LoLTeamSorterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250415164609_ModeMachmakingMigrate")]
+    partial class ModeMachmakingMigrate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,6 +117,10 @@ namespace LoLTeamSorter.Infra.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
