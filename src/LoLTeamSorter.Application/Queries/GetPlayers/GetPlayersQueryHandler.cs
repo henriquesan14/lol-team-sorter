@@ -1,4 +1,5 @@
-﻿using LoLTeamSorter.Application.Contracts.Data;
+﻿using LoLTeamSorter.Application.Contracts.CQRS;
+using LoLTeamSorter.Application.Contracts.Data;
 using LoLTeamSorter.Application.Extensions;
 using LoLTeamSorter.Application.ViewModels;
 using LoLTeamSorter.Domain.Entities;
@@ -6,7 +7,7 @@ using MediatR;
 
 namespace LoLTeamSorter.Application.Queries.GetPlayers
 {
-    public class GetPlayersQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetPlayersQuery, IEnumerable<PlayerViewModel>>
+    public class GetPlayersQueryHandler(IUnitOfWork unitOfWork) : IQueryHandler<GetPlayersQuery, IEnumerable<PlayerViewModel>>
     {
         public async Task<IEnumerable<PlayerViewModel>> Handle(GetPlayersQuery request, CancellationToken cancellationToken)
         {

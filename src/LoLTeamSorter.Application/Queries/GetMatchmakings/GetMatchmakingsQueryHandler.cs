@@ -1,4 +1,5 @@
-﻿using LoLTeamSorter.Application.Contracts.Data;
+﻿using LoLTeamSorter.Application.Contracts.CQRS;
+using LoLTeamSorter.Application.Contracts.Data;
 using LoLTeamSorter.Application.Extensions;
 using LoLTeamSorter.Application.ViewModels;
 using LoLTeamSorter.Domain.Entities;
@@ -7,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace LoLTeamSorter.Application.Queries.GetMatchmakings
 {
-    public class GetMatchmakingsQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetMatchmakingsQuery, IEnumerable<MatchmakingViewModel>>
+    public class GetMatchmakingsQueryHandler(IUnitOfWork unitOfWork) : IQueryHandler<GetMatchmakingsQuery, IEnumerable<MatchmakingViewModel>>
     {
         public async Task<IEnumerable<MatchmakingViewModel>> Handle(GetMatchmakingsQuery request, CancellationToken cancellationToken)
         {

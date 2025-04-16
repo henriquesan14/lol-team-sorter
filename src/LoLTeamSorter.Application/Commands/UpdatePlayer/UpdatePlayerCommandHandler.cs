@@ -1,4 +1,5 @@
-﻿using LoLTeamSorter.Application.Contracts.Data;
+﻿using LoLTeamSorter.Application.Contracts.CQRS;
+using LoLTeamSorter.Application.Contracts.Data;
 using LoLTeamSorter.Application.Exceptions;
 using LoLTeamSorter.Domain.ValueObjects;
 using LoLTeamSorter.Infra.ExternalServices;
@@ -6,7 +7,7 @@ using MediatR;
 
 namespace LoLTeamSorter.Application.Commands.UpdatePlayer
 {
-    public class UpdatePlayerCommandHandler(IUnitOfWork unitOfWork, IRiotApiService riotApiService) : IRequestHandler<UpdatePlayerCommand, Unit>
+    public class UpdatePlayerCommandHandler(IUnitOfWork unitOfWork, IRiotApiService riotApiService) : ICommandHandler<UpdatePlayerCommand, Unit>
     {
         public async Task<Unit> Handle(UpdatePlayerCommand request, CancellationToken cancellationToken)
         {

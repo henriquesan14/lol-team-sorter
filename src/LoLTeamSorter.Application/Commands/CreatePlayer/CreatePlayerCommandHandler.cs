@@ -1,12 +1,12 @@
-﻿using LoLTeamSorter.Application.Contracts.Data;
+﻿using LoLTeamSorter.Application.Contracts.CQRS;
+using LoLTeamSorter.Application.Contracts.Data;
 using LoLTeamSorter.Domain.Entities;
 using LoLTeamSorter.Domain.ValueObjects;
 using LoLTeamSorter.Infra.ExternalServices;
-using MediatR;
 
 namespace LoLTeamSorter.Application.Commands.CreatePlayer
 {
-    public class CreatePlayerCommandHandler(IUnitOfWork unitOfWork, IRiotApiService riotApiService) : IRequestHandler<CreatePlayerCommand, Guid>
+    public class CreatePlayerCommandHandler(IUnitOfWork unitOfWork, IRiotApiService riotApiService) : ICommandHandler<CreatePlayerCommand, Guid>
     {
         public async Task<Guid> Handle(CreatePlayerCommand request, CancellationToken cancellationToken)
         {

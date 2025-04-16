@@ -1,11 +1,12 @@
-﻿using LoLTeamSorter.Application.Contracts.Data;
+﻿using LoLTeamSorter.Application.Contracts.CQRS;
+using LoLTeamSorter.Application.Contracts.Data;
 using LoLTeamSorter.Application.Exceptions;
 using LoLTeamSorter.Domain.ValueObjects;
 using MediatR;
 
 namespace LoLTeamSorter.Application.Commands.DeletePlayer
 {
-    public class DeletePlayerCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeletePlayerCommand, Unit>
+    public class DeletePlayerCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<DeletePlayerCommand>
     {
         public async Task<Unit> Handle(DeletePlayerCommand request, CancellationToken cancellationToken)
         {

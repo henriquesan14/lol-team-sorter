@@ -1,9 +1,10 @@
-﻿using LoLTeamSorter.Application.ViewModels;
+﻿using LoLTeamSorter.Application.Contracts.CQRS;
+using LoLTeamSorter.Application.ViewModels;
 using MediatR;
 
 namespace LoLTeamSorter.Application.Queries.GetPlayers
 {
-    public record GetPlayersQuery : IRequest<IEnumerable<PlayerViewModel>>
+    public record GetPlayersQuery : IQuery<IEnumerable<PlayerViewModel>>
     {
     }
 }
