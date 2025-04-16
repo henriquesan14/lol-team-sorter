@@ -1,4 +1,5 @@
-﻿using LoLTeamSorter.Application.Contracts.Data;
+﻿using LoLTeamSorter.Application.Contracts.CQRS;
+using LoLTeamSorter.Application.Contracts.Data;
 using LoLTeamSorter.Application.Extensions;
 using LoLTeamSorter.Application.Services;
 using LoLTeamSorter.Application.ViewModels;
@@ -9,7 +10,7 @@ using MediatR;
 
 namespace LoLTeamSorter.Application.Commands.GenerateMatchmaking
 {
-    public class GenerateMatchmakingCommandHandler : IRequestHandler<GenerateMatchmakingCommand, MatchmakingViewModel>
+    public class GenerateMatchmakingCommandHandler : ICommandHandler<GenerateMatchmakingCommand, MatchmakingViewModel>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly MatchmakingService _matchmakingService;
