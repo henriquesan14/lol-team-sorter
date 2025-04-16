@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using LoLTeamSorter.Application.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LoLTeamSorter.Application
 {
@@ -10,6 +11,8 @@ namespace LoLTeamSorter.Application
             {
                 cfg.RegisterServicesFromAssemblies(typeof(DependencyInjection).Assembly);
             });
+
+            services.AddScoped<MatchmakingService>();
 
             return services;
         }
