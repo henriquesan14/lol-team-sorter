@@ -9,6 +9,7 @@ namespace LoLTeamSorte.API
         {
             services.AddCarter();
             services.AddJsonSerializationConfig();
+            services.AddCorsConfig();
 
             return services;
         }
