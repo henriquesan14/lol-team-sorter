@@ -14,6 +14,12 @@ namespace LoLTeamSorter.Application.Commands.UpdatePlayer
             var player = await unitOfWork.Players.GetByIdAsync(PlayerId.Of(request.Id));
             if (player == null) throw new PlayerNotFoundException(request.Id);
 
+            var playerExists = await unitOfWork.Players.GetSingleAsync(
+                p => p.RiotIdentifier.Name == request.RiotName &&
+                     p.RiotIdentifier.Tag == request.RiotTag
+            );
+            if (playerExists != null && player.Id != playerExists.Id) throw new PlayerAlreadyExistsException(playerExists.RiotIdentifier.ToString());
+
             var riotIdentifier = RiotIdentifier.Of(request.RiotName, request.RiotTag);
             if (player.RiotIdentifier != riotIdentifier)
             {
