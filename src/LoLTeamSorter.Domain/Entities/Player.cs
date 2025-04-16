@@ -48,5 +48,10 @@ namespace LoLTeamSorter.Domain.Entities
         {
             RiotIdentifier = riotIdentifier;
         }
+
+        public void SetRiotId(string riotId)
+        {
+            RiotId = riotId;
+        }
     }
 }
