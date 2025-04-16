@@ -1,10 +1,12 @@
 ﻿using Carter;
 using LoLTeamSorter.Application.Commands.CreatePlayer;
 using LoLTeamSorter.Application.Commands.DeletePlayer;
+using LoLTeamSorter.Application.Commands.DeletePlayers;
 using LoLTeamSorter.Application.Commands.UpdatePlayer;
 using LoLTeamSorter.Application.Commands.UpdateRankedTier;
 using LoLTeamSorter.Application.Queries.GetPlayers;
 using MediatR;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace LoLTeamSorte.API.Endpoints
 {
@@ -39,6 +41,13 @@ namespace LoLTeamSorte.API.Endpoints
             group.MapDelete("/{id}", async (Guid id, ISender sender) =>
             {
                 var command = new DeletePlayerCommand(id);
+                await sender.Send(command);
+
+                return Results.NoContent();
+            });
+
+            group.MapPost("/delete", async (DeletePlayersCommand command, ISender sender) =>
+            {
                 await sender.Send(command);
 
                 return Results.NoContent();
