@@ -1,5 +1,8 @@
 ﻿using Carter;
 using LoLTeamSorter.Application.Commands.CreatePlayer;
+using LoLTeamSorter.Application.Commands.DeletePlayer;
+using LoLTeamSorter.Application.Commands.UpdatePlayer;
+using LoLTeamSorter.Application.Commands.UpdateRankedTier;
 using LoLTeamSorter.Application.Queries.GetPlayers;
 using MediatR;
 
@@ -24,6 +27,29 @@ namespace LoLTeamSorte.API.Endpoints
                 var result = await sender.Send(query);
 
                 return Results.Ok(result);
+            });
+
+            group.MapPut("/", async (UpdatePlayerCommand command, ISender sender) =>
+            {
+                await sender.Send(command);
+
+                return Results.NoContent();
+            });
+
+            group.MapDelete("/{id}", async (Guid id, ISender sender) =>
+            {
+                var command = new DeletePlayerCommand(id);
+                await sender.Send(command);
+
+                return Results.NoContent();
+            });
+
+            group.MapPatch("/{id}", async (Guid Id, ISender sender) =>
+            {
+                var command = new UpdateRankedTierCommand(Id);
+                await sender.Send(command);
+
+                return Results.NoContent();
             });
         }
     }

@@ -30,5 +30,23 @@ namespace LoLTeamSorter.Domain.Entities
                 RiotId= riotId
             };
         }
+
+        public void Update(string name, LaneEnum mainLane, LaneEnum secondaryLane, int stars)
+        {
+            Name = name;
+            MainLane = mainLane;
+            SecondaryLane = secondaryLane;
+            Stars = stars;
+        }
+
+        public void SetRankedTier(RankedTier rankedTier)
+        {
+            RankedTier = rankedTier;
+        }
+
+        public void SetRiotIdentifier(RiotIdentifier riotIdentifier)
+        {
+            RiotIdentifier = riotIdentifier;
+        }
     }
 }
