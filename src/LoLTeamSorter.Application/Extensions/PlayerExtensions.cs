@@ -20,6 +20,7 @@ namespace LoLTeamSorter.Application.Extensions
             return new PlayerViewModel
             (
                 Id: player.Id.Value,
+                Name: player.Name,
                 RiotName: player.RiotIdentifier.Name,
                 RiotTag: player.RiotIdentifier.Tag,
                 MainLane: player.MainLane,

@@ -8,6 +8,13 @@ namespace LoLTeamSorter.Domain.ValueObjects
         public TierEnum Tier { get; private set; }
         public RankEnum? Rank { get; private set; }
 
+        private static readonly TierEnum[] TiersWithoutRank =
+        {
+            TierEnum.MASTER,
+            TierEnum.GRANDMASTER,
+            TierEnum.CHALLENGER
+        };
+
         private RankedTier(TierEnum tier, RankEnum? rank = null)
         {
             Tier = tier;
@@ -33,7 +40,7 @@ namespace LoLTeamSorter.Domain.ValueObjects
 
         private bool NeedsRank(TierEnum tier)
         {
-            return tier is not TierEnum.MASTER || tier is not TierEnum.GRANDMASTER || tier is not TierEnum.CHALLENGER;
+            return !TiersWithoutRank.Contains(tier);
         }
 
         public int GetWeight()
@@ -46,15 +53,8 @@ namespace LoLTeamSorter.Domain.ValueObjects
         public override string ToString()
             => Rank.HasValue ? $"{Tier} {Rank}" : Tier.ToString();
 
-        // Equals e GetHashCode para comparar corretamente
-        //public override bool Equals(object? obj) => Equals(obj as RankedTier);
-
-        //public bool Equals(RankedTier? other)
-        //{
-        //    if (other is null) return false;
-        //    return Tier == other.Tier && Rank == other.Rank;
-        //}
-
         public override int GetHashCode() => HashCode.Combine(Tier, Rank);
     }
+
+
 }
