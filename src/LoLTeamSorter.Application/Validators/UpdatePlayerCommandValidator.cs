@@ -1,12 +1,15 @@
 ﻿using FluentValidation;
-using LoLTeamSorter.Application.Commands.CreatePlayer;
+using LoLTeamSorter.Application.Commands.UpdatePlayer;
 
 namespace LoLTeamSorter.Application.Validators
 {
-    public class CreatePlayerCommandValidator : AbstractValidator<CreatePlayerCommand>
+    public class UpdatePlayerCommandValidator : AbstractValidator<UpdatePlayerCommand>
     {
-        public CreatePlayerCommandValidator()
+        public UpdatePlayerCommandValidator()
         {
+            RuleFor(d => d.Id)
+                .NotEmpty().WithMessage("O campo {PropertyName} é obrigatório");
+ 
             RuleFor(d => d.Name)
                 .NotEmpty().WithMessage("O campo {PropertyName} é obrigatório")
                 .MaximumLength(30).WithMessage("O campo {PropertyName} não pode ter mais de 30 caracteres");
