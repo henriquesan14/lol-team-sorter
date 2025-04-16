@@ -6,7 +6,7 @@
         {
         }
 
-        public ConflictException(string name, object key) : base($"Entity \"{name}\" ({key}) already exists.")
+        public ConflictException(string name, object key) : base($"{name} ({key}) already exists.")
         {
         }
     }
