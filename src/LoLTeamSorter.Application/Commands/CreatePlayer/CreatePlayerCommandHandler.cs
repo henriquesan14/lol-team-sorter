@@ -19,9 +19,10 @@ namespace LoLTeamSorter.Application.Commands.CreatePlayer
             if (playerExists != null) throw new PlayerAlreadyExistsException(playerExists.RiotIdentifier.ToString());
             var account = await riotApiService.GetAccountByRiotIdAsync(request.RiotName, request.RiotTag);
             var leagues = await riotApiService.GetLeagueByRiotIdAsync(account.Puuid);
-            var rankedSolo = leagues.First(l => l.QueueType.Equals("RANKED_SOLO_5x5"));
-
-            var rankedTier = RankedTier.Of(rankedSolo.Tier, rankedSolo.Rank);
+            var rankedSolo = leagues.FirstOrDefault(l => l.QueueType.Equals("RANKED_SOLO_5x5"));
+            var rankedTier = rankedSolo is not null
+                ? RankedTier.Of(rankedSolo.Tier, rankedSolo.Rank)
+                : RankedTier.Unranked();
 
             var player = Player.Create(
                 PlayerId.Of(Guid.NewGuid()),

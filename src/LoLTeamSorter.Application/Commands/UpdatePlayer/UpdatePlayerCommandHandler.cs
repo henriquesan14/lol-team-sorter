@@ -25,9 +25,11 @@ namespace LoLTeamSorter.Application.Commands.UpdatePlayer
             {
                 var account = await riotApiService.GetAccountByRiotIdAsync(request.RiotName, request.RiotTag);
                 var leagues = await riotApiService.GetLeagueByRiotIdAsync(account.Puuid);
-                var rankedSolo = leagues.First(l => l.QueueType.Equals("RANKED_SOLO_5x5"));
+                var rankedSolo = leagues.FirstOrDefault(l => l.QueueType.Equals("RANKED_SOLO_5x5"));
+                var rankedTier = rankedSolo is not null
+                    ? RankedTier.Of(rankedSolo.Tier, rankedSolo.Rank)
+                    : RankedTier.Unranked();
 
-                var rankedTier = RankedTier.Of(rankedSolo.Tier, rankedSolo.Rank);
                 player.SetRankedTier(rankedTier);
                 player.SetRiotIdentifier(riotIdentifier);
                 player.SetRiotId(account.Puuid);

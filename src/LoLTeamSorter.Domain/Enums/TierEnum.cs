@@ -11,6 +11,7 @@
         DIAMOND,
         MASTER,
         GRANDMASTER,
-        CHALLENGER
+        CHALLENGER,
+        UNRANKED
     }
 }

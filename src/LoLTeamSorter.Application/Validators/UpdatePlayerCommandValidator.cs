@@ -20,8 +20,8 @@ namespace LoLTeamSorter.Application.Validators
 
             RuleFor(d => d.RiotTag)
                 .NotEmpty().WithMessage("O campo {PropertyName} é obrigatório")
-                .Must(tag => tag.Length is 3 or 5)
-                .WithMessage("O campo {PropertyName} deve ter 3 ou 5 caracteres.");
+                .Length(3, 5)
+                .WithMessage("O campo {PropertyName} deve ter entre 3 e 5 caracteres.");
 
             RuleFor(d => d.MainLane)
                 .NotNull().WithMessage("O campo {PropertyName} é obrigatório")
