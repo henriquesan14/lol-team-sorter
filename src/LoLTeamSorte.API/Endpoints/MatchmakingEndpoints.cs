@@ -1,6 +1,8 @@
 ﻿using Carter;
 using LoLTeamSorter.Application.Commands.GenerateMatchmaking;
+using LoLTeamSorter.Application.Pagination;
 using LoLTeamSorter.Application.Queries.GetMatchmakings;
+using LoLTeamSorter.Domain.Enums;
 using MediatR;
 
 namespace LoLTeamSorte.API.Endpoints
@@ -18,9 +20,9 @@ namespace LoLTeamSorte.API.Endpoints
                 return Results.Ok(result);
             });
 
-            group.MapGet("/", async (ISender sender) =>
+            group.MapGet("/", async ([AsParameters] PaginationRequest request, ModeEnum? mode, DateTime? startDate, DateTime? endDate, ISender sender) =>
             {
-                var query = new GetMatchmakingsQuery();
+                var query = new GetMatchmakingsQuery(mode, startDate, endDate, request.PageNumber, request.PageSize);
                 var result = await sender.Send(query);
 
                 return Results.Ok(result);
