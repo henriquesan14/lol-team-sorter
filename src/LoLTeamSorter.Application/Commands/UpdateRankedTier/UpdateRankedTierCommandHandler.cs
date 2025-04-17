@@ -16,9 +16,11 @@ namespace LoLTeamSorter.Application.Commands.UpdateRankedTier
 
             
             var leagues = await riotApiService.GetLeagueByRiotIdAsync(player.RiotId);
-            var rankedSolo = leagues.First(l => l.QueueType.Equals("RANKED_SOLO_5x5"));
+            var rankedSolo = leagues.FirstOrDefault(l => l.QueueType.Equals("RANKED_SOLO_5x5"));
+            var rankedTier = rankedSolo is not null
+                ? RankedTier.Of(rankedSolo.Tier, rankedSolo.Rank)
+                : RankedTier.Unranked();
 
-            var rankedTier = RankedTier.Of(rankedSolo.Tier, rankedSolo.Rank);
             player.SetRankedTier(rankedTier);
 
             await unitOfWork.CompleteAsync();

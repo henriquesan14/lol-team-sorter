@@ -12,7 +12,8 @@ namespace LoLTeamSorter.Domain.ValueObjects
         {
             TierEnum.MASTER,
             TierEnum.GRANDMASTER,
-            TierEnum.CHALLENGER
+            TierEnum.CHALLENGER,
+            TierEnum.UNRANKED
         };
 
         private RankedTier(TierEnum tier, RankEnum? rank = null)
@@ -37,6 +38,9 @@ namespace LoLTeamSorter.Domain.ValueObjects
 
             return new RankedTier(tierEnum, rankEnum);
         }
+
+        public static RankedTier Unranked()
+        => new RankedTier(TierEnum.UNRANKED);
 
         private bool NeedsRank(TierEnum tier)
         {
