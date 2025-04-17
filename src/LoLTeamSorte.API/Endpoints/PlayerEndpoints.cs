@@ -4,6 +4,7 @@ using LoLTeamSorter.Application.Commands.DeletePlayer;
 using LoLTeamSorter.Application.Commands.DeletePlayers;
 using LoLTeamSorter.Application.Commands.UpdatePlayer;
 using LoLTeamSorter.Application.Commands.UpdateRankedTier;
+using LoLTeamSorter.Application.Commands.UpdateRankedTiers;
 using LoLTeamSorter.Application.Queries.GetPlayers;
 using MediatR;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -58,6 +59,12 @@ namespace LoLTeamSorte.API.Endpoints
                 var command = new UpdateRankedTierCommand(Id);
                 await sender.Send(command);
 
+                return Results.NoContent();
+            });
+
+            group.MapPost("/update-ranked-tiers", async (UpdateRankedTiersCommand command, ISender sender) =>
+            {
+                await sender.Send(command);
                 return Results.NoContent();
             });
         }
