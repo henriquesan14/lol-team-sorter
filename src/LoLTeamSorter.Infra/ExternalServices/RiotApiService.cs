@@ -90,6 +90,10 @@ namespace LoLTeamSorter.Infra.ExternalServices
                     stats.Wins++;
                 else
                     stats.Losses++;
+
+                stats.TotalKills += player.Kills;
+                stats.TotalDeaths += player.Deaths;
+                stats.TotalAssists += player.Assists;
             }
 
             return championStats.Values

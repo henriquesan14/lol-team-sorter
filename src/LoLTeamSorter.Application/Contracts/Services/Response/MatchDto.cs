@@ -6,5 +6,5 @@
 
     public record InfoDto(List<ParticipantDto> Participants, int QueueId, int GameDuration);
 
-    public record ParticipantDto(string Puuid, int ChampionId, string ChampionName, bool Win);
+    public record ParticipantDto(string Puuid, int ChampionId, string ChampionName, bool Win, int Kills, int Deaths, int Assists);
 }
