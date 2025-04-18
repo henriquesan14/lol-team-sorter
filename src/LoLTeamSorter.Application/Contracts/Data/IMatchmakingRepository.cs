@@ -5,5 +5,6 @@ namespace LoLTeamSorter.Application.Contracts.Data
 {
     public interface IMatchmakingRepository : IAsyncRepository<Matchmaking, MatchmakingId>
     {
+        Task DeleteRange(List<MatchmakingId> MatchmakingIds);
     }
 }
