@@ -5,24 +5,25 @@ namespace LoLTeamSorter.Application.Extensions
 {
     public static class MatchmakingExtensions
     {
-        public static IEnumerable<MatchmakingViewModel> ToViewModelList(this IEnumerable<Matchmaking> teams)
+        public static IEnumerable<MatchmakingViewModel> ToViewModelList(this IEnumerable<Matchmaking> matchmakings)
         {
-            return teams.Select(team => EntityToViewModel(team!));
+            return matchmakings.Select(matchmaking => EntityToViewModel(matchmaking!));
         }
 
-        public static MatchmakingViewModel ToViewModel(this Matchmaking team)
+        public static MatchmakingViewModel ToViewModel(this Matchmaking matchmaking)
         {
-            return EntityToViewModel(team);
+            return EntityToViewModel(matchmaking);
         }
 
-        private static MatchmakingViewModel EntityToViewModel(Matchmaking team)
+        private static MatchmakingViewModel EntityToViewModel(Matchmaking matchmaking)
         {
             return new MatchmakingViewModel
             (
-                BlueTeam: team.BlueTeam.ToViewModel(),
-                RedTeam: team.RedTeam.ToViewModel(),
-                Mode: team.Mode,
-                CreatedAt: team.CreatedAt!.Value
+                Id: matchmaking.Id.Value,
+                BlueTeam: matchmaking.BlueTeam.ToViewModel(),
+                RedTeam: matchmaking.RedTeam.ToViewModel(),
+                Mode: matchmaking.Mode,
+                CreatedAt: matchmaking.CreatedAt!.Value
             );
         }
     }
