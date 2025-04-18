@@ -43,16 +43,38 @@ namespace LoLTeamSorter.Infra
             services.AddRefitClient<IRiotAccountApi>()
                 .ConfigureHttpClient(c =>
                 {
-                    c.BaseAddress = new Uri(configuration["RiotApi:AccountUrlBase"]!);
+                    c.BaseAddress = new Uri(configuration["RiotApi:AmericasUrlBase"]!);
                     c.DefaultRequestHeaders.Add("X-Riot-Token", configuration["RiotApi:ApiKey"]!);
                 });
 
             services.AddRefitClient<IRiotLeagueApi>()
                 .ConfigureHttpClient(c =>
                 {
-                    c.BaseAddress = new Uri(configuration["RiotApi:LeagueUrlBase"]!);
+                    c.BaseAddress = new Uri(configuration["RiotApi:Br1UrlBase"]!);
                     c.DefaultRequestHeaders.Add("X-Riot-Token", configuration["RiotApi:ApiKey"]!);
                 });
+
+            services.AddRefitClient<IChampionMasteryApi>()
+                .ConfigureHttpClient(c =>
+                {
+                    c.BaseAddress = new Uri(configuration["RiotApi:Br1UrlBase"]!);
+                    c.DefaultRequestHeaders.Add("X-Riot-Token", configuration["RiotApi:ApiKey"]!);
+                });
+
+            services.AddRefitClient<IDDragonApi>()
+                .ConfigureHttpClient(c =>
+                {
+                    c.BaseAddress = new Uri(configuration["RiotApi:DDragonUrlBase"]!);
+                });
+
+            services.AddRefitClient<IRiotMatchApi>()
+                .ConfigureHttpClient(c =>
+                {
+                    c.BaseAddress = new Uri(configuration["RiotApi:AmericasUrlBase"]!);
+                    c.DefaultRequestHeaders.Add("X-Riot-Token", configuration["RiotApi:ApiKey"]!);
+                });
+
+
 
             services.AddScoped<IRiotApiService, RiotApiService>();
 

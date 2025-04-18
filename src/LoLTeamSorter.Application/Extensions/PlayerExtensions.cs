@@ -28,7 +28,8 @@ namespace LoLTeamSorter.Application.Extensions
                 Tier: player.RankedTier.Tier,
                 Rank: player.RankedTier.Rank, 
                 Stars: player.Stars,
-                TierWeight: player.RankedTier.GetWeight()
+                TierWeight: player.RankedTier.GetWeight(),
+                RiotId: player.RiotId
             );
         }
     }

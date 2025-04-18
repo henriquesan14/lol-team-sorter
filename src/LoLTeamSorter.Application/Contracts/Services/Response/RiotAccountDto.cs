@@ -3,7 +3,7 @@
 namespace LoLTeamSorter.Application.Contracts.Response
 {
     public record RiotAccountDto(
-        [property: JsonPropertyName("puuid")] string Puuid, 
-        [property: JsonPropertyName("gameName")] string GameName, 
-        [property: JsonPropertyName("tagLine")] string TagLine);
+        string Puuid, 
+        string GameName, 
+        string TagLine);
 }
