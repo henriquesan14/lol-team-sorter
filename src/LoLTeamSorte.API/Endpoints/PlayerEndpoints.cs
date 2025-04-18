@@ -5,6 +5,7 @@ using LoLTeamSorter.Application.Commands.DeletePlayers;
 using LoLTeamSorter.Application.Commands.UpdatePlayer;
 using LoLTeamSorter.Application.Commands.UpdateRankedTier;
 using LoLTeamSorter.Application.Commands.UpdateRankedTiers;
+using LoLTeamSorter.Application.Queries.GetChampionMasteries;
 using LoLTeamSorter.Application.Queries.GetPlayers;
 using MediatR;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -66,6 +67,13 @@ namespace LoLTeamSorte.API.Endpoints
             {
                 await sender.Send(command);
                 return Results.NoContent();
+            });
+
+            group.MapGet("/{riotId}championMasteries/", async (string riotId, ISender sender) =>
+            {
+                var query = new GetChampionMasteriesQuery(riotId);
+                var result = await sender.Send(query);
+                return Results.Ok(result);
             });
         }
     }
