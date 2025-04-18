@@ -6,6 +6,7 @@ using LoLTeamSorter.Application.Commands.UpdatePlayer;
 using LoLTeamSorter.Application.Commands.UpdateRankedTier;
 using LoLTeamSorter.Application.Commands.UpdateRankedTiers;
 using LoLTeamSorter.Application.Queries.GetChampionMasteries;
+using LoLTeamSorter.Application.Queries.GetChampionRankedStats;
 using LoLTeamSorter.Application.Queries.GetPlayers;
 using MediatR;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -69,9 +70,16 @@ namespace LoLTeamSorte.API.Endpoints
                 return Results.NoContent();
             });
 
-            group.MapGet("/{riotId}championMasteries/", async (string riotId, ISender sender) =>
+            group.MapGet("/{riotId}/championMasteries/", async (string riotId, ISender sender) =>
             {
                 var query = new GetChampionMasteriesQuery(riotId);
+                var result = await sender.Send(query);
+                return Results.Ok(result);
+            });
+
+            group.MapGet("/{riotId}/champion-ranked-stats", async (string riotId, ISender sender) =>
+            {
+                var query = new GetChampionRankedStatsQuery(riotId);
                 var result = await sender.Send(query);
                 return Results.Ok(result);
             });

@@ -8,7 +8,7 @@ using System.Net;
 namespace LoLTeamSorter.Infra.ExternalServices
 {
     public class RiotApiService(IConfiguration configuration, IRiotAccountApi riotAccountApi, IRiotLeagueApi riotLeagueApi, IChampionMasteryApi championMasteryApi,
-        IDDragonApi ddragonApi) : IRiotApiService
+        IDDragonApi ddragonApi, IRiotMatchApi riotMatchApi) : IRiotApiService
     {
         public async Task<RiotAccountDto> GetAccountByRiotIdAsync(string gameName, string tagLine)
         {
@@ -49,6 +49,52 @@ namespace LoLTeamSorter.Infra.ExternalServices
             }
 
             return topMasteries;
+        }
+
+        public async Task<List<ChampionRankedStatsDto>> GetRankedChampionStatsAsync(string riotId)
+        {
+            var matchIds = await riotMatchApi.GetMatchIdsAsync(riotId, count: 20);
+            var championStats = new Dictionary<int, ChampionRankedStatsDto>();
+
+            var matchTasks = new List<Task<MatchDto>>();
+
+            foreach (var matchId in matchIds)
+            {
+                matchTasks.Add(riotMatchApi.GetMatchAsync(matchId));
+                await Task.Delay(100);
+            }
+
+            var matches = await Task.WhenAll(matchTasks);
+
+            foreach (var match in matches)
+            {
+                if (match.Info.GameDuration < 300)
+                    continue;
+
+                var player = match.Info.Participants.FirstOrDefault(p => p.Puuid == riotId);
+                if (player == null)
+                    continue;
+
+                if (!championStats.TryGetValue(player.ChampionId, out var stats))
+                {
+                    stats = new ChampionRankedStatsDto(player.ChampionId)
+                    {
+                        Name = player.ChampionName,
+                        ImageUrl = $"{configuration["RiotApi:DDragonUrlBase"]}/cdn/14.8.1/img/champion/{player.ChampionName}.png"
+                    };
+                    championStats[player.ChampionId] = stats;
+                }
+
+                stats.Matches++;
+                if (player.Win)
+                    stats.Wins++;
+                else
+                    stats.Losses++;
+            }
+
+            return championStats.Values
+                .OrderByDescending(x => x.Matches)
+                .ToList();
         }
 
         private async Task<Dictionary<int, ChampionInfoDto>> GetChampionMapAsync()
