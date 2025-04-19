@@ -67,6 +67,12 @@ namespace LoLTeamSorter.Infra
                     c.BaseAddress = new Uri(configuration["RiotApi:DDragonUrlBase"]!);
                 });
 
+            services.AddRefitClient<IDDragonVersionApi>()
+                .ConfigureHttpClient(c =>
+                {
+                    c.BaseAddress = new Uri(configuration["RiotApi:DDragonUrlBase"]!);
+                });
+
             services.AddRefitClient<IRiotMatchApi>()
                 .ConfigureHttpClient(c =>
                 {
