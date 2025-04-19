@@ -8,7 +8,7 @@ using System.Net;
 namespace LoLTeamSorter.Infra.ExternalServices
 {
     public class RiotApiService(IConfiguration configuration, IRiotAccountApi riotAccountApi, IRiotLeagueApi riotLeagueApi, IChampionMasteryApi championMasteryApi,
-        IDDragonApi ddragonApi, IRiotMatchApi riotMatchApi) : IRiotApiService
+        IDDragonApi ddragonApi, IRiotMatchApi riotMatchApi, IDDragonVersionApi dDragonVersionApi) : IRiotApiService
     {
         public async Task<RiotAccountDto> GetAccountByRiotIdAsync(string gameName, string tagLine)
         {
@@ -53,7 +53,10 @@ namespace LoLTeamSorter.Infra.ExternalServices
 
         public async Task<List<ChampionRankedStatsDto>> GetRankedChampionStatsAsync(string riotId)
         {
-            var matchIds = await riotMatchApi.GetMatchIdsAsync(riotId, count: 20);
+            var versions = await dDragonVersionApi.GetVersionsAsync();
+            var latestVersion = versions.FirstOrDefault();
+
+            var matchIds = await riotMatchApi.GetMatchIdsAsync(riotId, count: 25);
             var championStats = new Dictionary<int, ChampionRankedStatsDto>();
 
             var matchTasks = new List<Task<MatchDto>>();
@@ -80,7 +83,7 @@ namespace LoLTeamSorter.Infra.ExternalServices
                     stats = new ChampionRankedStatsDto(player.ChampionId)
                     {
                         Name = player.ChampionName,
-                        ImageUrl = $"{configuration["RiotApi:DDragonUrlBase"]}/cdn/14.8.1/img/champion/{player.ChampionName}.png"
+                        ImageUrl = $"{configuration["RiotApi:DDragonUrlBase"]}/cdn/{latestVersion}/img/champion/{player.ChampionName}.png"
                     };
                     championStats[player.ChampionId] = stats;
                 }
@@ -103,12 +106,14 @@ namespace LoLTeamSorter.Infra.ExternalServices
 
         private async Task<Dictionary<int, ChampionInfoDto>> GetChampionMapAsync()
         {
-            var championData = await ddragonApi.GetChampionDataAsync();
+            var versions = await dDragonVersionApi.GetVersionsAsync();
+            var latestVersion = versions.FirstOrDefault();
+            var championData = await ddragonApi.GetChampionDataAsync(latestVersion!);
 
             var championMap = championData.Data.Values
                 .ToDictionary(
                     x => int.Parse(x.Key),
-                    x => new ChampionInfoDto(x.Name, $"{configuration["RiotApi:DDragonUrlBase"]}/cdn/14.8.1/img/champion/{x.Image.Full}"));
+                    x => new ChampionInfoDto(x.Name, $"{configuration["RiotApi:DDragonUrlBase"]}/cdn/{latestVersion}/img/champion/{x.Image.Full}"));
 
             return championMap;
         }
