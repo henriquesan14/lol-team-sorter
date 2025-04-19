@@ -9,7 +9,7 @@ using LoLTeamSorter.Application.Queries.GetChampionMasteries;
 using LoLTeamSorter.Application.Queries.GetChampionRankedStats;
 using LoLTeamSorter.Application.Queries.GetPlayers;
 using MediatR;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LoLTeamSorte.API.Endpoints
 {
@@ -17,7 +17,8 @@ namespace LoLTeamSorte.API.Endpoints
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            var group = app.MapGroup("/api/players");
+            var group = app.MapGroup("/api/players")
+                .RequireAuthorization();
 
             group.MapPost("/", async (CreatePlayerCommand command, ISender sender) =>
             {
@@ -26,7 +27,7 @@ namespace LoLTeamSorte.API.Endpoints
                 return Results.Created($"players/{result}", result);
             });
 
-            group.MapGet("/", async (ISender sender) =>
+            group.MapGet("/", [Authorize(Policy = "VisualizarPlayer")] async (ISender sender) =>
             {
                 var query = new GetPlayersQuery();
                 var result = await sender.Send(query);
