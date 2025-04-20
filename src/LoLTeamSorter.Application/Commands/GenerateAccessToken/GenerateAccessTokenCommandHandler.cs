@@ -1,6 +1,7 @@
 ﻿using LoLTeamSorter.Application.Contracts.CQRS;
 using LoLTeamSorter.Application.Contracts.Data;
 using LoLTeamSorter.Application.Contracts.Services;
+using LoLTeamSorter.Application.Exceptions;
 using LoLTeamSorter.Application.Extensions;
 using LoLTeamSorter.Application.ViewModels;
 using LoLTeamSorter.Domain.Entities;
@@ -21,11 +22,11 @@ namespace LoLTeamSorter.Application.Commands.GenerateAccessToken
             };
             var userExists = await unitOfWork.Users.GetSingleAsync(predicate, includes: includes);
             if (userExists == null)
-                throw new Exception("Username or password are incorrect");
+                throw new UnauthorizedException();
             bool password = BCrypt.Net.BCrypt.Verify(request.Password, userExists.Password);
             if (!password)
             {
-                throw new Exception("Username or password are incorrect");
+                throw new UnauthorizedException();
             }
             var accesstoken = tokenService.GenerateAccessToken(userExists);
             var viewModel = new AuthResponseViewModel(accesstoken, userExists.ToViewModel());

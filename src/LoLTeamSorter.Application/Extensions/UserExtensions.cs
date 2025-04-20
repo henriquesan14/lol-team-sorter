@@ -21,7 +21,7 @@ namespace LoLTeamSorter.Application.Extensions
             (
                 Id: user.Id.Value,
                 Name: user.Name,
-                Username: user.Username,
+                Username: user.Username.Value,
                 Group: user.Group.ToViewModel()
             );
         }

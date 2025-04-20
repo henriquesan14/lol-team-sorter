@@ -49,6 +49,12 @@ namespace LoLTeamSorter.Infra.ErrorHandling
                     exception.GetType().Name,
                     context.Response.StatusCode = StatusCodes.Status409Conflict
                 ),
+                UnauthorizedException =>
+                (
+                    exception.Message,
+                    exception.GetType().Name,
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized
+                ),
                 _ =>
                 (
                     exception.Message,
