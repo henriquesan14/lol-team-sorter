@@ -8,7 +8,7 @@ namespace LoLTeamSorte.API.Extensions
     {
         public static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration)
         {
-            const string claimType = "Permissoes";
+            const string claimType = "Permissions";
             var secretKey = Encoding.ASCII.GetBytes(configuration["TokenSettings:Secret"]!);
 
             services.AddAuthentication(x =>
@@ -33,16 +33,17 @@ namespace LoLTeamSorte.API.Extensions
 
             var permissoes = new Dictionary<string, string[]>
             {
-                // Processo
-                ["CadastrarPlayer"] = ["CADASTRAR_PLAYER"],
-                ["EditarPlayer"] = ["EDITAR_PROCESSO"],
-                ["ExcluirPlayer"] = ["EXCLUIR_PROCESSO"],
-                ["VisualizarPlayer"] = ["LISTAR_PROCESSO"],
+                // Player
+                ["CreatePlayer"] = ["CREATE_PLAYER"],
+                ["EditPlayer"] = ["EDIT_PLAYER"],
+                ["DeletePlayer"] = ["DELETE_PLAYER"],
+                ["ViewPlayer"] = ["VIEW_PLAYER"],
+                ["UpdateRankedTierPlayer"] = ["UPDATE_RANKED_TIER_PLAYER"],
 
-                //Sorteio
-                ["VisualizarSorteio"] = ["VISUALIZAR_SORTEIO"],
-                ["GerarSorteio"] = ["GERAR_SORTEIO"],
-                ["ExcluirSorteio"] = ["EXCLUIR_SORTEIO"]
+                //Matchmaking
+                ["ViewMatchmaking"] = ["VIEW_MATCHMAKING"],
+                ["GenerateMatchmaking"] = ["GENERATE_MATCHMAKING"],
+                ["DeleteMatchmaking"] = ["DELETE_MATCHMAKING"]
             };
 
             var builder = services.AddAuthorizationBuilder();
