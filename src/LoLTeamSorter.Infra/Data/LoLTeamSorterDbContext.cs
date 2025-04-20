@@ -16,6 +16,10 @@ namespace LoLTeamSorter.Infra.Data
 
         public DbSet<Matchmaking> Matchmakings => Set<Matchmaking>();
 
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Group> Groups => Set<Group>();
+        public DbSet<Permission> Permissions => Set<Permission>();
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

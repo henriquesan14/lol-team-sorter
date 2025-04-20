@@ -5,6 +5,7 @@
         IPlayerRepository Players { get; }
         ITeamRepository Teams { get; }
         IMatchmakingRepository Matchmakings { get; }
+        IUserRepository Users { get; }
         Task<int> CompleteAsync();
         Task BeginTransaction();
         Task CommitAsync();
