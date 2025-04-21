@@ -19,6 +19,7 @@ namespace LoLTeamSorter.Application.Extensions
         {
             return new PermissionViewModel
             (
+                Id: permission.Id.Value,
                 Name: permission.Name
             );
         }

@@ -40,6 +40,7 @@ namespace LoLTeamSorter.Infra
             services.AddScoped<IMatchmakingRepository, MatchmakingRepository>();
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPermissionRepository, PermissionRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
