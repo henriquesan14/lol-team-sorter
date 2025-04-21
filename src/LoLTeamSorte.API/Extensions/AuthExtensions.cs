@@ -43,7 +43,13 @@ namespace LoLTeamSorte.API.Extensions
                 //Matchmaking
                 ["ViewMatchmaking"] = ["VIEW_MATCHMAKING"],
                 ["GenerateMatchmaking"] = ["GENERATE_MATCHMAKING"],
-                ["DeleteMatchmaking"] = ["DELETE_MATCHMAKING"]
+                ["DeleteMatchmaking"] = ["DELETE_MATCHMAKING"],
+
+                // User
+                ["ViewUser"] = ["VIEW_USER"],
+                ["CreateUser"] = ["CREATE_USER"],
+                ["EditUser"] = ["EDIT_USER"],
+                ["DeleteUser"] = ["DELETE_USER"]
             };
 
             var builder = services.AddAuthorizationBuilder();

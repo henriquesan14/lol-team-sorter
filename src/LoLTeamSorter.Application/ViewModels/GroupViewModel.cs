@@ -1,4 +1,4 @@
 ﻿namespace LoLTeamSorter.Application.ViewModels
 {
-    public record GroupViewModel(string Name, List<PermissionViewModel> Permissions);
+    public record GroupViewModel(Guid Id, string Name, List<PermissionViewModel> Permissions);
 }

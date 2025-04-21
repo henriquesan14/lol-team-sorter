@@ -19,6 +19,7 @@ namespace LoLTeamSorter.Application.Extensions
         {
             return new GroupViewModel
             (
+                Id:group.Id.Value,
                 Name: group.Name,
                 Permissions: group.Permissions.ToViewModelList().ToList()
             );
