@@ -1,5 +1,9 @@
 ﻿using Carter;
 using LoLTeamSorter.Application.Commands.CreateUser;
+using LoLTeamSorter.Application.Commands.DeletePlayer;
+using LoLTeamSorter.Application.Commands.DeletePlayers;
+using LoLTeamSorter.Application.Commands.DeleteUser;
+using LoLTeamSorter.Application.Commands.DeleteUsers;
 using LoLTeamSorter.Application.Commands.UpdateUser;
 using LoLTeamSorter.Application.Queries.GetUsers;
 using MediatR;
@@ -29,6 +33,21 @@ namespace LoLTeamSorte.API.Endpoints
             });
 
             group.MapPut("/", [Authorize(Policy = "EditUser")] async (UpdateUserCommand command, ISender sender) =>
+            {
+                await sender.Send(command);
+
+                return Results.NoContent();
+            });
+
+            group.MapDelete("/{id}", [Authorize(Policy = "DeleteUser")] async (Guid id, ISender sender) =>
+            {
+                var command = new DeleteUserCommand(id);
+                await sender.Send(command);
+
+                return Results.NoContent();
+            });
+
+            group.MapPost("/delete", [Authorize(Policy = "DeleteUser")] async (DeleteUsersCommand command, ISender sender) =>
             {
                 await sender.Send(command);
 
