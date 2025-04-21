@@ -21,5 +21,17 @@ namespace LoLTeamSorter.Domain.Entities
                 GroupId = groupId
             };
         }
+
+        public void Update(string name, Username username, GroupId groupId)
+        {
+            Name = name;
+            Username = username;
+            GroupId = groupId;
+        }
+
+        public void UpdatePassword(string password)
+        {
+            Password = password;
+        }
     }
 }

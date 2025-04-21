@@ -1,5 +1,6 @@
 ﻿using Carter;
 using LoLTeamSorter.Application.Commands.CreateUser;
+using LoLTeamSorter.Application.Commands.UpdateUser;
 using LoLTeamSorter.Application.Queries.GetUsers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -25,6 +26,13 @@ namespace LoLTeamSorte.API.Endpoints
                 var result = await sender.Send(command);
 
                 return Results.Created($"users/{result}", result);
+            });
+
+            group.MapPut("/", [Authorize(Policy = "EditUser")] async (UpdateUserCommand command, ISender sender) =>
+            {
+                await sender.Send(command);
+
+                return Results.NoContent();
             });
         }
     }
