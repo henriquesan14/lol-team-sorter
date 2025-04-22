@@ -18,14 +18,14 @@ namespace LoLTeamSorte.API.Endpoints
         {
             var group = app.MapGroup("/api/groups");
 
-            group.MapGet("/", [Authorize(Policy = "CreateUser")] async (ISender sender) =>
+            group.MapGet("/", [Authorize(Policy = "ViewUser")] async (ISender sender) =>
             {
                 var query = new GetGroupsQuery();
                 var result = await sender.Send(query);
 
                 return Results.Ok(result);
             });
-            group.MapGet("/{id}", [Authorize(Policy = "CreateUser")] async (Guid id, ISender sender) =>
+            group.MapGet("/{id}", [Authorize(Policy = "ViewUser")] async (Guid id, ISender sender) =>
             {
                 var query = new GetGroupByIdQuery(id);
                 var result = await sender.Send(query);
