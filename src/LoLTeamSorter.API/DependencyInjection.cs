@@ -11,8 +11,11 @@ namespace LoLTeamSorter.API
     {
         public static void ConfigureHostUrls(this WebApplicationBuilder builder)
         {
-            var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-            builder.WebHost.UseUrls($"http://*:{port}");
+            if (builder.Environment.IsProduction())
+            {
+                var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+                builder.WebHost.UseUrls($"http://*:{port}");
+            }
         }
 
         public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
