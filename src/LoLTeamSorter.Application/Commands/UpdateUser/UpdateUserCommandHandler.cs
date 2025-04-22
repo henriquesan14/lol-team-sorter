@@ -21,7 +21,7 @@ namespace LoLTeamSorter.Application.Commands.UpdateUser
 
             user.Update(request.Name, Username.Of(request.Username), GroupId.Of(request.GroupId));
 
-            if(request.Password != null) user.UpdatePassword(request.Password);
+            if(request.Password != null) user.UpdatePassword(BCrypt.Net.BCrypt.HashPassword(request.Password, 8));
 
             await unitOfWork.CompleteAsync();
 
