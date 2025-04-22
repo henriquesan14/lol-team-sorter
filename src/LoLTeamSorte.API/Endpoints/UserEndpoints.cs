@@ -1,7 +1,5 @@
 ﻿using Carter;
 using LoLTeamSorter.Application.Commands.CreateUser;
-using LoLTeamSorter.Application.Commands.DeletePlayer;
-using LoLTeamSorter.Application.Commands.DeletePlayers;
 using LoLTeamSorter.Application.Commands.DeleteUser;
 using LoLTeamSorter.Application.Commands.DeleteUsers;
 using LoLTeamSorter.Application.Commands.UpdateUser;

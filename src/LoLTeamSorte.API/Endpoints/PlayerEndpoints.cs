@@ -19,7 +19,7 @@ namespace LoLTeamSorte.API.Endpoints
         {
             var group = app.MapGroup("/api/players");
 
-            group.MapPost("/", async (CreatePlayerCommand command, ISender sender) =>
+            group.MapPost("/", [Authorize(Policy = "CreatePlayer")] async (CreatePlayerCommand command, ISender sender) =>
             {
                 var result = await sender.Send(command);
 
