@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace LoLTeamSorte.API.Extensions
+namespace LoLTeamSorter.API.Extensions
 {
     public static class SerializationExtensions
     {

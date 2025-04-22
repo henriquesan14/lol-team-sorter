@@ -2,7 +2,7 @@
 using LoLTeamSorter.Application.Commands.GenerateAccessToken;
 using MediatR;
 
-namespace LoLTeamSorte.API.Endpoints
+namespace LoLTeamSorter.API.Endpoints
 {
     public class AuthEndpoints : ICarterModule
     {

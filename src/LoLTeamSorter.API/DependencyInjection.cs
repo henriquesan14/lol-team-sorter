@@ -1,9 +1,9 @@
 ﻿using Carter;
-using LoLTeamSorte.API.Extensions;
+using LoLTeamSorter.API.Extensions;
 using LoLTeamSorter.Infra.ErrorHandling;
 using Scalar.AspNetCore;
 
-namespace LoLTeamSorte.API
+namespace LoLTeamSorter.API
 {
     public static class DependencyInjection
     {

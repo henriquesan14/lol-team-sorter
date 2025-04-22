@@ -8,7 +8,7 @@ using LoLTeamSorter.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
-namespace LoLTeamSorte.API.Endpoints
+namespace LoLTeamSorter.API.Endpoints
 {
     public class MatchmakingEndpoints : ICarterModule
     {

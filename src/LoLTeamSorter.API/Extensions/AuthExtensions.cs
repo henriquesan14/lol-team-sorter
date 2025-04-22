@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace LoLTeamSorte.API.Extensions
+namespace LoLTeamSorter.API.Extensions
 {
     public static class AuthExtensions
     {

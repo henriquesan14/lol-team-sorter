@@ -1,10 +1,13 @@
-using LoLTeamSorte.API;
+using LoLTeamSorter.API;
 using LoLTeamSorter.Application;
 using LoLTeamSorter.Infra;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://*:{port}");
+
+builder.Services.AddHealthChecks();
 
 var configuration = builder.Configuration;
 
@@ -14,6 +17,8 @@ builder.Services
     .AddApiServices(configuration);
 
 var app = builder.Build();
+
+app.UseHealthChecks("/health");
 
 app.UseApiServices();
 

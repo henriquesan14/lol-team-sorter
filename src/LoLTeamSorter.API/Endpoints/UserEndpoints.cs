@@ -7,7 +7,7 @@ using LoLTeamSorter.Application.Queries.GetUsers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
-namespace LoLTeamSorte.API.Endpoints
+namespace LoLTeamSorter.API.Endpoints
 {
     public class UserEndpoints : ICarterModule
     {
