@@ -12,22 +12,22 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["LoLTeamSorte.API/LoLTeamSorte.API.csproj", "LoLTeamSorte.API/"]
-COPY ["LoLTeamSorter.Application/LoLTeamSorter.Application.csproj", "LoLTeamSorter.Application/"]
-COPY ["LoLTeamSorter.Domain/LoLTeamSorter.Domain.csproj", "LoLTeamSorter.Domain/"]
-COPY ["LoLTeamSorter.Infra/LoLTeamSorter.Infra.csproj", "LoLTeamSorter.Infra/"]
-RUN dotnet restore "./LoLTeamSorte.API/LoLTeamSorte.API.csproj"
+COPY ["src/LoLTeamSorter.API/LoLTeamSorter.API.csproj", "src/LoLTeamSorter.API/"]
+COPY ["src/LoLTeamSorter.Application/LoLTeamSorter.Application.csproj", "src/LoLTeamSorter.Application/"]
+COPY ["src/LoLTeamSorter.Domain/LoLTeamSorter.Domain.csproj", "src/LoLTeamSorter.Domain/"]
+COPY ["src/LoLTeamSorter.Infra/LoLTeamSorter.Infra.csproj", "src/LoLTeamSorter.Infra/"]
+RUN dotnet restore "./src/LoLTeamSorter.API/LoLTeamSorter.API.csproj"
 COPY . .
-WORKDIR "/src/LoLTeamSorte.API"
-RUN dotnet build "./LoLTeamSorte.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/src/LoLTeamSorter.API"
+RUN dotnet build "./LoLTeamSorter.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Esta fase é usada para publicar o projeto de serviço a ser copiado para a fase final
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./LoLTeamSorte.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./LoLTeamSorter.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Esta fase é usada na produção ou quando executada no VS no modo normal (padrão quando não está usando a configuração de Depuração)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "LoLTeamSorte.API.dll"]
+ENTRYPOINT ["dotnet", "LoLTeamSorter.API.dll"]
