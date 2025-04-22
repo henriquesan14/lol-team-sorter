@@ -5,5 +5,6 @@ namespace LoLTeamSorter.Application.Contracts.Data
 {
     public interface IGroupRepository : IAsyncRepository<Group, GroupId>
     {
+        Task DeleteRange(List<GroupId> UserIds);
     }
 }
