@@ -1,0 +1,8 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "./src/LoLTeamSorter.API/Dockerfile"
+
+[deploy]
+startCommand = "dotnet LoLTeamSorter.API.dll"
+restartPolicyType = "always"
+healthcheckPath = "/health"

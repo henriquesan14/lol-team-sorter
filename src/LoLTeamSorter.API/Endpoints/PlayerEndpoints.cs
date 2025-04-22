@@ -11,7 +11,7 @@ using LoLTeamSorter.Application.Queries.GetPlayers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
-namespace LoLTeamSorte.API.Endpoints
+namespace LoLTeamSorter.API.Endpoints
 {
     public class PlayerEndpoints : ICarterModule
     {

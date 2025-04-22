@@ -2,15 +2,13 @@
 using LoLTeamSorter.Application.Commands.CreateGroup;
 using LoLTeamSorter.Application.Commands.DeleteGroup;
 using LoLTeamSorter.Application.Commands.DeleteGroups;
-using LoLTeamSorter.Application.Commands.DeleteUser;
-using LoLTeamSorter.Application.Commands.DeleteUsers;
 using LoLTeamSorter.Application.Commands.UpdateGroup;
 using LoLTeamSorter.Application.Queries.GetGroupById;
 using LoLTeamSorter.Application.Queries.GetGroups;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
-namespace LoLTeamSorte.API.Endpoints
+namespace LoLTeamSorter.API.Endpoints
 {
     public class GroupEndpoints : ICarterModule
     {
