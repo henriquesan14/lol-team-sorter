@@ -1,5 +1,6 @@
 ﻿using Carter;
 using LoLTeamSorter.Application.Commands.CreateGroup;
+using LoLTeamSorter.Application.Commands.UpdateGroup;
 using LoLTeamSorter.Application.Queries.GetGroupById;
 using LoLTeamSorter.Application.Queries.GetGroups;
 using MediatR;
@@ -33,6 +34,13 @@ namespace LoLTeamSorte.API.Endpoints
                 var result = await sender.Send(command);
 
                 return Results.Created($"groups/{result}", result);
+            });
+
+            group.MapPut("/", [Authorize(Policy = "CreateUser")] async (UpdateGroupCommand command, ISender sender) =>
+            {
+                var result = await sender.Send(command);
+
+                return Results.NoContent();
             });
         }
     }

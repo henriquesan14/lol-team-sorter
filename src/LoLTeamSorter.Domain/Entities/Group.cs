@@ -21,6 +21,18 @@ namespace LoLTeamSorter.Domain.Entities
             };
         }
 
+        public void Update(string name)
+        {
+            Name = name;
+        }
+
+        public void SetPermissions(IEnumerable<Permission> permissoes)
+        {
+            _permissions.Clear();
+            if (permissoes != null)
+                _permissions.AddRange(permissoes);
+        }
+
         public void AddPermission(Permission permission) => _permissions.Add(permission);
     }
 }
