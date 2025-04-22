@@ -11,7 +11,7 @@ var configuration = builder.Configuration;
 builder.Services
     .AddInfrastructure(configuration)
     .AddApplication()
-    .AddApiServices(configuration);
+    .AddApiServices(builder, configuration);
 
 var app = builder.Build();
 
