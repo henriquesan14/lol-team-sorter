@@ -1,4 +1,5 @@
-﻿using Carter;
+﻿using AspNetCoreRateLimit;
+using Carter;
 using HealthChecks.UI.Client;
 using LoLTeamSorter.API.Extensions;
 using LoLTeamSorter.Infra.ErrorHandling;
@@ -32,6 +33,8 @@ namespace LoLTeamSorter.API
             services.AddHealthChecks()
                 .AddNpgSql(configuration.GetConnectionString("DbConnection")!);
 
+            services.AddRateLimitingConfig(builder.Configuration);
+
             return services;
         }
 
@@ -52,6 +55,7 @@ namespace LoLTeamSorter.API
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseIpRateLimiting();
 
             app.UseHealthChecks("/health", new HealthCheckOptions
             {
