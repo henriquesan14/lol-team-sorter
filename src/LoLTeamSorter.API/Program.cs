@@ -4,16 +4,7 @@ using LoLTeamSorter.Infra;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Configuration
-//    .SetBasePath(Directory.GetCurrentDirectory())
-//    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-//    .AddJsonFile("appsettings.Production.json", optional: true, reloadOnChange: true)
-//    .AddEnvironmentVariables();
-
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-builder.WebHost.UseUrls($"http://*:{port}");
-
-builder.Services.AddHealthChecks();
+builder.ConfigureHostUrls();
 
 var configuration = builder.Configuration;
 
@@ -23,8 +14,6 @@ builder.Services
     .AddApiServices(configuration);
 
 var app = builder.Build();
-
-app.UseHealthChecks("/health");
 
 app.UseApiServices();
 
