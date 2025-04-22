@@ -1,5 +1,6 @@
 ﻿using Carter;
 using LoLTeamSorter.Application.Commands.CreateGroup;
+using LoLTeamSorter.Application.Queries.GetGroupById;
 using LoLTeamSorter.Application.Queries.GetGroups;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -15,6 +16,13 @@ namespace LoLTeamSorte.API.Endpoints
             group.MapGet("/", [Authorize(Policy = "CreateUser")] async (ISender sender) =>
             {
                 var query = new GetGroupsQuery();
+                var result = await sender.Send(query);
+
+                return Results.Ok(result);
+            });
+            group.MapGet("/{id}", [Authorize(Policy = "CreateUser")] async (Guid id, ISender sender) =>
+            {
+                var query = new GetGroupByIdQuery(id);
                 var result = await sender.Send(query);
 
                 return Results.Ok(result);
