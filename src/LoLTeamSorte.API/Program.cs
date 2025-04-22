@@ -1,7 +1,6 @@
 using LoLTeamSorte.API;
 using LoLTeamSorter.Application;
 using LoLTeamSorter.Infra;
-using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,19 +13,8 @@ builder.Services
     .AddApplication()
     .AddApiServices(configuration);
 
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
 var app = builder.Build();
 
 app.UseApiServices();
-app.UseCors("AllowSpecificOrigin");
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.MapScalarApiReference();
-}
 
 app.Run();

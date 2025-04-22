@@ -3,7 +3,9 @@ using LoLTeamSorter.Application.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace LoLTeamSorter.Infra.ErrorHandling
 {
@@ -48,6 +50,17 @@ namespace LoLTeamSorter.Infra.ErrorHandling
                     exception.Message,
                     exception.GetType().Name,
                     context.Response.StatusCode = StatusCodes.Status409Conflict
+                ),
+                UnauthorizedException =>
+                (
+                    exception.Message,
+                    exception.GetType().Name,
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized
+                ),
+                DbUpdateException dbEx when dbEx.InnerException is PostgresException pgEx && pgEx.SqlState == "23503" => (
+                    "Não foi possível concluir a operação porque o registro está associado a outro recurso no sistema.",
+                    "Violação de Integridade Referencial",
+                    StatusCodes.Status409Conflict
                 ),
                 _ =>
                 (

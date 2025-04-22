@@ -9,7 +9,7 @@ using LoLTeamSorter.Application.Queries.GetChampionMasteries;
 using LoLTeamSorter.Application.Queries.GetChampionRankedStats;
 using LoLTeamSorter.Application.Queries.GetPlayers;
 using MediatR;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LoLTeamSorte.API.Endpoints
 {
@@ -19,14 +19,14 @@ namespace LoLTeamSorte.API.Endpoints
         {
             var group = app.MapGroup("/api/players");
 
-            group.MapPost("/", async (CreatePlayerCommand command, ISender sender) =>
+            group.MapPost("/", [Authorize(Policy = "CreatePlayer")] async (CreatePlayerCommand command, ISender sender) =>
             {
                 var result = await sender.Send(command);
 
                 return Results.Created($"players/{result}", result);
             });
 
-            group.MapGet("/", async (ISender sender) =>
+            group.MapGet("/", [Authorize(Policy = "ViewPlayer")] async (ISender sender) =>
             {
                 var query = new GetPlayersQuery();
                 var result = await sender.Send(query);
@@ -34,14 +34,14 @@ namespace LoLTeamSorte.API.Endpoints
                 return Results.Ok(result);
             });
 
-            group.MapPut("/", async (UpdatePlayerCommand command, ISender sender) =>
+            group.MapPut("/", [Authorize(Policy = "EditPlayer")] async (UpdatePlayerCommand command, ISender sender) =>
             {
                 await sender.Send(command);
 
                 return Results.NoContent();
             });
 
-            group.MapDelete("/{id}", async (Guid id, ISender sender) =>
+            group.MapDelete("/{id}", [Authorize(Policy = "DeletePlayer")] async (Guid id, ISender sender) =>
             {
                 var command = new DeletePlayerCommand(id);
                 await sender.Send(command);
@@ -49,14 +49,14 @@ namespace LoLTeamSorte.API.Endpoints
                 return Results.NoContent();
             });
 
-            group.MapPost("/delete", async (DeletePlayersCommand command, ISender sender) =>
+            group.MapPost("/delete", [Authorize(Policy = "DeletePlayer")] async (DeletePlayersCommand command, ISender sender) =>
             {
                 await sender.Send(command);
 
                 return Results.NoContent();
             });
 
-            group.MapPatch("/{id}", async (Guid Id, ISender sender) =>
+            group.MapPatch("/{id}", [Authorize(Policy = "UpdateRankedTierPlayer")] async (Guid Id, ISender sender) =>
             {
                 var command = new UpdateRankedTierCommand(Id);
                 await sender.Send(command);
@@ -64,20 +64,20 @@ namespace LoLTeamSorte.API.Endpoints
                 return Results.NoContent();
             });
 
-            group.MapPost("/update-ranked-tiers", async (UpdateRankedTiersCommand command, ISender sender) =>
+            group.MapPost("/update-ranked-tiers", [Authorize(Policy = "UpdateRankedTierPlayer")] async (UpdateRankedTiersCommand command, ISender sender) =>
             {
                 await sender.Send(command);
                 return Results.NoContent();
             });
 
-            group.MapGet("/{riotId}/championMasteries/", async (string riotId, ISender sender) =>
+            group.MapGet("/{riotId}/championMasteries/", [Authorize(Policy = "ViewPlayer")] async (string riotId, ISender sender) =>
             {
                 var query = new GetChampionMasteriesQuery(riotId);
                 var result = await sender.Send(query);
                 return Results.Ok(result);
             });
 
-            group.MapGet("/{riotId}/champion-ranked-stats", async (string riotId, ISender sender) =>
+            group.MapGet("/{riotId}/champion-ranked-stats", [Authorize(Policy = "ViewPlayer")] async (string riotId, ISender sender) =>
             {
                 var query = new GetChampionRankedStatsQuery(riotId);
                 var result = await sender.Send(query);

@@ -22,6 +22,48 @@ namespace LoLTeamSorter.Infra.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("GroupPermission", b =>
+                {
+                    b.Property<Guid>("GroupsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PermissionsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("GroupsId", "PermissionsId");
+
+                    b.HasIndex("PermissionsId");
+
+                    b.ToTable("PermissionsGroup", (string)null);
+                });
+
+            modelBuilder.Entity("LoLTeamSorter.Domain.Entities.Group", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Groups");
+                });
+
             modelBuilder.Entity("LoLTeamSorter.Domain.Entities.Matchmaking", b =>
                 {
                     b.Property<Guid>("Id")
@@ -56,6 +98,37 @@ namespace LoLTeamSorter.Infra.Migrations
                     b.HasIndex("RedTeamId");
 
                     b.ToTable("Matchmakings");
+                });
+
+            modelBuilder.Entity("LoLTeamSorter.Domain.Entities.Permission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("PermissionCategory")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissions");
                 });
 
             modelBuilder.Entity("LoLTeamSorter.Domain.Entities.Player", b =>
@@ -121,6 +194,51 @@ namespace LoLTeamSorter.Infra.Migrations
                     b.ToTable("Teams");
                 });
 
+            modelBuilder.Entity("LoLTeamSorter.Domain.Entities.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("PlayerTeam", b =>
                 {
                     b.Property<Guid>("PlayersId")
@@ -134,6 +252,21 @@ namespace LoLTeamSorter.Infra.Migrations
                     b.HasIndex("TeamsId");
 
                     b.ToTable("TeamPlayer", (string)null);
+                });
+
+            modelBuilder.Entity("GroupPermission", b =>
+                {
+                    b.HasOne("LoLTeamSorter.Domain.Entities.Group", null)
+                        .WithMany()
+                        .HasForeignKey("GroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LoLTeamSorter.Domain.Entities.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("PermissionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LoLTeamSorter.Domain.Entities.Matchmaking", b =>
@@ -209,6 +342,17 @@ namespace LoLTeamSorter.Infra.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("LoLTeamSorter.Domain.Entities.User", b =>
+                {
+                    b.HasOne("LoLTeamSorter.Domain.Entities.Group", "Group")
+                        .WithMany("Users")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("PlayerTeam", b =>
                 {
                     b.HasOne("LoLTeamSorter.Domain.Entities.Player", null)
@@ -222,6 +366,11 @@ namespace LoLTeamSorter.Infra.Migrations
                         .HasForeignKey("TeamsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LoLTeamSorter.Domain.Entities.Group", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,17 +8,23 @@ namespace LoLTeamSorter.Infra.Data.Repositories
         private IDbContextTransaction _transaction;
         private readonly LoLTeamSorterDbContext _dbContext;
 
-        public UnitOfWork(LoLTeamSorterDbContext dbContext, IPlayerRepository players, ITeamRepository teams, IMatchmakingRepository matchmakings)
+        public UnitOfWork(LoLTeamSorterDbContext dbContext, IPlayerRepository players, ITeamRepository teams, IMatchmakingRepository matchmakings, IUserRepository users, IGroupRepository groups, IPermissionRepository permissions)
         {
             _dbContext = dbContext;
             Players = players;
             Teams = teams;
             Matchmakings = matchmakings;
+            Users = users;
+            Groups = groups;
+            Permissions = permissions;
         }
 
         public IPlayerRepository Players { get; }
         public ITeamRepository Teams { get; }
         public IMatchmakingRepository Matchmakings { get; }
+        public IUserRepository Users { get; }
+        public IGroupRepository Groups { get; }
+        public IPermissionRepository Permissions { get; }
 
         public async Task BeginTransaction()
         {

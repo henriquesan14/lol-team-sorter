@@ -1,6 +1,7 @@
 ﻿using Carter;
 using LoLTeamSorte.API.Extensions;
 using LoLTeamSorter.Infra.ErrorHandling;
+using Scalar.AspNetCore;
 
 namespace LoLTeamSorte.API
 {
@@ -11,8 +12,12 @@ namespace LoLTeamSorte.API
             services.AddCarter();
             services.AddJsonSerializationConfig();
             services.AddCorsConfig();
+            services.AddAuthConfig(configuration);
 
             services.AddExceptionHandler<CustomExceptionHandler>();
+
+            services.AddOpenApi();
+
 
             return services;
         }
@@ -22,6 +27,17 @@ namespace LoLTeamSorte.API
             app.MapCarter();
 
             app.UseExceptionHandler(options => { });
+
+            app.UseCors("AllowSpecificOrigin");
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.MapOpenApi();
+                app.MapScalarApiReference();
+            }
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             return app;
         }
