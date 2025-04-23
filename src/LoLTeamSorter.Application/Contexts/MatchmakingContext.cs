@@ -5,10 +5,10 @@ namespace LoLTeamSorter.Application.Contexts
 {
     public class MatchmakingContext
     {
-        private IBalanceStrategy _balanceStrategy;
+        private IDrawStrategy _balanceStrategy;
 
         // Definir qual estratégia de balanceamento usar
-        public void SetBalanceStrategy(IBalanceStrategy balanceStrategy)
+        public void SetDrawStrategy(IDrawStrategy balanceStrategy)
         {
             _balanceStrategy = balanceStrategy;
         }
@@ -16,7 +16,7 @@ namespace LoLTeamSorter.Application.Contexts
         // Balancear os times com a estratégia definida
         public (List<Player> BlueTeam, List<Player> RedTeam) BalanceTeams(List<Player> players)
         {
-            return _balanceStrategy.BalanceTeams(players);
+            return _balanceStrategy.DrawTeams(players);
         }
     }
 }

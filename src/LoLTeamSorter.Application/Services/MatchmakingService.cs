@@ -15,16 +15,16 @@ namespace LoLTeamSorter.Application.Services
             switch (strategy)
             {
                 case ModeEnum.STARS:
-                    context.SetBalanceStrategy(new BalanceByStars());
+                    context.SetDrawStrategy(new DrawByStars());
                     break;
                 case ModeEnum.TIER:
-                    context.SetBalanceStrategy(new BalanceByTier());
+                    context.SetDrawStrategy(new DrawByTier());
                     break;
                 case ModeEnum.LANE:
-                    context.SetBalanceStrategy(new BalanceByLane());
+                    context.SetDrawStrategy(new DrawByLane());
                     break;
                 case ModeEnum.RANDOM:
-                    context.SetBalanceStrategy(new BalanceRandom());
+                    context.SetDrawStrategy(new DrawByRandom());
                     break;
                 default:
                     throw new ArgumentException("Strategy not found");

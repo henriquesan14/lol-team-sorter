@@ -2,12 +2,12 @@
 
 namespace LoLTeamSorter.Domain.Strategies
 {
-    public class BalanceByTier : IBalanceStrategy
+    public class DrawByTier : IDrawStrategy
     {
         private const int MaxTierDifference = 2; // Diferença máxima permitida entre os times
         private const int MaxAttempts = 10; // Número máximo de tentativas
 
-        public (List<Player> BlueTeam, List<Player> RedTeam) BalanceTeams(List<Player> players)
+        public (List<Player> BlueTeam, List<Player> RedTeam) DrawTeams(List<Player> players)
         {
             return TryBalance(players, attempt: 1);
         }
