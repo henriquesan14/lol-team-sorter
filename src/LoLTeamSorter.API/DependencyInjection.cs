@@ -21,9 +21,9 @@ namespace LoLTeamSorter.API
 
         public static IServiceCollection AddApiServices(this IServiceCollection services, WebApplicationBuilder builder, IConfiguration configuration)
         {
+            services.AddCorsConfig(builder.Environment);
             services.AddCarter();
             services.AddJsonSerializationConfig();
-            services.AddCorsConfig(builder.Environment);
             services.AddAuthConfig(configuration);
 
             services.AddExceptionHandler<CustomExceptionHandler>();
