@@ -2,6 +2,7 @@
 {
     public enum TierEnum
     {
+        UNRANKED,
         IRON,
         BRONZE,
         SILVER,
@@ -12,6 +13,5 @@
         MASTER,
         GRANDMASTER,
         CHALLENGER,
-        UNRANKED
     }
 }
