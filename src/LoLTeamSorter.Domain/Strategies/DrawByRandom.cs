@@ -2,9 +2,9 @@
 
 namespace LoLTeamSorter.Domain.Strategies
 {
-    public class BalanceRandom : IBalanceStrategy
+    public class DrawByRandom : IDrawStrategy
     {
-        public (List<Player> BlueTeam, List<Player> RedTeam) BalanceTeams(List<Player> players)
+        public (List<Player> BlueTeam, List<Player> RedTeam) DrawTeams(List<Player> players)
         {
             var random = new Random();
             var shuffledPlayers = players.OrderBy(p => random.Next()).ToList(); // Embaralha a lista de jogadores

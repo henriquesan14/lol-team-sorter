@@ -2,9 +2,9 @@
 
 namespace LoLTeamSorter.Domain.Strategies
 {
-    public class BalanceByLane : IBalanceStrategy
+    public class DrawByLane : IDrawStrategy
     {
-        public (List<Player> BlueTeam, List<Player> RedTeam) BalanceTeams(List<Player> players)
+        public (List<Player> BlueTeam, List<Player> RedTeam) DrawTeams(List<Player> players)
         {
             // Dividir jogadores por MainLane e SecondaryLane
             var mainLanePlayers = players.GroupBy(p => p.MainLane).ToDictionary(g => g.Key, g => g.ToList());
