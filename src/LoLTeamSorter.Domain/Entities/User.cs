@@ -12,7 +12,7 @@ namespace LoLTeamSorter.Domain.Entities
         public GroupId GroupId { get; private set; } = default!;
         public string? DiscordId { get; private set; } = default!;
         public string? AvatarUrl { get; private set; } = default!;
-        public bool LoginExterno { get; private set; } = default;
+        public bool ExternalLogin { get; private set; } = default;
 
         public static User Create(UserId id, string name, Username username, string password, GroupId groupId)
         {
@@ -22,7 +22,7 @@ namespace LoLTeamSorter.Domain.Entities
                 Username = username,
                 Password = password,
                 GroupId = groupId,
-                LoginExterno = false
+                ExternalLogin = false
             };
         }
 
@@ -36,7 +36,7 @@ namespace LoLTeamSorter.Domain.Entities
                 GroupId = groupId,
                 DiscordId = discordId,
                 AvatarUrl = avatarUrl,
-                LoginExterno = true,
+                ExternalLogin = true,
                 Password = null
             };
         }

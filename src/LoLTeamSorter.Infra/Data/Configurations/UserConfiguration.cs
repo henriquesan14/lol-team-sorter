@@ -35,7 +35,7 @@ namespace LoLTeamSorter.Infra.Data.Configurations
             builder.Property(d => d.Password)
                 .HasMaxLength(100);
 
-            builder.Property(d => d.LoginExterno)
+            builder.Property(d => d.ExternalLogin)
                 .IsRequired();
 
             builder.Property(d => d.DiscordId)

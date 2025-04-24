@@ -25,15 +25,7 @@ namespace LoLTeamSorter.API.Endpoints
                 LoginDiscordCommand command = new LoginDiscordCommand(code);
                 var result = await sender.Send(command);
 
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-
-                var json = JsonSerializer.Serialize(result, options);
-                var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
-
-                return Results.Redirect($"http://localhost:4200/auth/callback#data={base64}");
+                return Results.Redirect(result.RedirectAppUrl!);
             });
         }
     }
