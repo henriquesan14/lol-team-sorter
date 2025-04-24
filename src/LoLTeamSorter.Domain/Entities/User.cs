@@ -60,7 +60,7 @@ namespace LoLTeamSorter.Domain.Entities
 
         public void SetAvatarUrl(string avatarUrl)
         {
-            AvatarUrl = AvatarUrl;
+            AvatarUrl = avatarUrl;
         }
 
         public void SetExternalLogin(bool externalLogin)

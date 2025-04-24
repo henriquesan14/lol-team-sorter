@@ -11,7 +11,7 @@ namespace LoLTeamSorter.Application.Commands.UpdatePassword
     {
         public async Task<Unit> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken)
         {
-            var user = await unitOfWork.Users.GetByIdAsync(UserId.Of(currentUserService.UserId));
+            var user = await unitOfWork.Users.GetByIdAsync(UserId.Of(currentUserService.UserId!.Value));
 
             if (!string.IsNullOrEmpty(user.Password))
             {
