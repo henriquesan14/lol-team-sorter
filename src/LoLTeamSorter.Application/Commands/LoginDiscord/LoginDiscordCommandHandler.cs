@@ -33,22 +33,39 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
 
             if (user is null)
             {
-                List<Expression<Func<Group, object>>> includesGroup = new List<Expression<Func<Group, object>>>
-                {
-                    u => u.Permissions,
-                };
-                var group = await unitOfWork.Groups.GetSingleAsync(g => g.Name == "MODERADOR", includes: includesGroup);
-                user = User.CreateExternal(
-                    UserId.Of(Guid.NewGuid()),
-                    name: userDiscord.Username,
-                    username: Username.Of(userDiscord.Username), 
-                    groupId: group.Id,
-                    discordId: userDiscord.Id,
-                    avatarUrl: $"https://cdn.discordapp.com/avatars/{userDiscord.Id}/{userDiscord.Avatar}.png"
-                );
+                var existingByUsername = await unitOfWork.Users.GetSingleAsync(u => u.Username.Value == userDiscord.Username, includes: includes);
 
-                await unitOfWork.Users.AddAsync(user);
-                await unitOfWork.CompleteAsync();
+                if (existingByUsername is not null)
+                {
+                    existingByUsername.SetDiscordId(userDiscord.Id);
+                    existingByUsername.SetAvatarUrl($"https://cdn.discordapp.com/avatars/{userDiscord.Id}/{userDiscord.Avatar}.png");
+                    existingByUsername.SetExternalLogin(true);
+
+                    user = existingByUsername;
+
+                    await unitOfWork.CompleteAsync();
+                }
+                else
+                {
+                    List<Expression<Func<Group, object>>> includesGroup = new List<Expression<Func<Group, object>>>
+                    {
+                        u => u.Permissions,
+                    };
+
+                    var group = await unitOfWork.Groups.GetSingleAsync(g => g.Name == "MODERADOR", includes: includesGroup);
+
+                    user = User.CreateExternal(
+                        UserId.Of(Guid.NewGuid()),
+                        name: userDiscord.Username,
+                        username: Username.Of(userDiscord.Username),
+                        groupId: group.Id,
+                        discordId: userDiscord.Id,
+                        avatarUrl: $"https://cdn.discordapp.com/avatars/{userDiscord.Id}/{userDiscord.Avatar}.png"
+                    );
+
+                    await unitOfWork.Users.AddAsync(user);
+                    await unitOfWork.CompleteAsync();
+                }
             }
 
             var jwt = tokenService.GenerateAccessToken(user);
