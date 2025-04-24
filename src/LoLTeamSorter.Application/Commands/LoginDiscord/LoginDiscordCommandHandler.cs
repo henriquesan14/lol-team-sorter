@@ -33,7 +33,7 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
 
             if (user is null)
             {
-                var existingByUsername = await unitOfWork.Users.GetSingleAsync(u => u.Username.Value == userDiscord.Username, includes: includes);
+                var existingByUsername = await unitOfWork.Users.GetSingleAsync(u => u.Username == Username.Of(userDiscord.Username), includes: includes);
 
                 if (existingByUsername is not null)
                 {
