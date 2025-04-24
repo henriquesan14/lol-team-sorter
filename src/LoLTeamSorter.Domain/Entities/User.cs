@@ -52,20 +52,5 @@ namespace LoLTeamSorter.Domain.Entities
         {
             Password = password;
         }
-
-        public void SetLoginExterno(bool loginExterno)
-        {
-            LoginExterno = loginExterno;
-        }
-
-        public void SetDiscordId(string discordId)
-        {
-            DiscordId = discordId;
-        }
-
-        public void SetAvatarUrl(string avatarUrl)
-        {
-            AvatarUrl = avatarUrl;
-        }
     }
 }
