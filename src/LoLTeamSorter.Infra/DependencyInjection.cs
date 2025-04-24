@@ -85,10 +85,17 @@ namespace LoLTeamSorter.Infra
                     c.DefaultRequestHeaders.Add("X-Riot-Token", configuration["RiotApi:ApiKey"]!);
                 });
 
+            services.AddRefitClient<IDiscordApi>()
+                .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://discord.com/api"));
+
 
 
             services.AddScoped<IRiotApiService, RiotApiService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IDiscordAuthService, DiscordAuthService>();
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             return services;
         }

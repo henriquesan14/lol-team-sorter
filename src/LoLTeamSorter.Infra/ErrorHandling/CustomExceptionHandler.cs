@@ -57,6 +57,11 @@ namespace LoLTeamSorter.Infra.ErrorHandling
                     exception.GetType().Name,
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized
                 ),
+                IntegrationException => (
+                    exception.Message,
+                    exception.GetType().Name,
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized
+                ),
                 DbUpdateException dbEx when dbEx.InnerException is PostgresException pgEx && pgEx.SqlState == "23503" => (
                     "Não foi possível concluir a operação porque o registro está associado a outro recurso no sistema.",
                     "Violação de Integridade Referencial",

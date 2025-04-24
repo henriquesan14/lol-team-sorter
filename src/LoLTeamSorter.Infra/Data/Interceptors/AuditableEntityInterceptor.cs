@@ -1,11 +1,12 @@
-﻿using LoLTeamSorter.Domain.Abstractions;
+﻿using LoLTeamSorter.Application.Contracts.Services;
+using LoLTeamSorter.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace LoLTeamSorter.Infra.Data.Interceptors
 {
-    public class AuditableEntityInterceptor : SaveChangesInterceptor
+    public class AuditableEntityInterceptor(ICurrentUserService currentUserService) : SaveChangesInterceptor
     {
         public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
         {
@@ -27,13 +28,13 @@ namespace LoLTeamSorter.Infra.Data.Interceptors
             {
                 if (entry.State == EntityState.Added)
                 {
-                    entry.Entity.CreatedBy = "henrique";
+                    entry.Entity.CreatedBy = currentUserService.UserId;
                     entry.Entity.CreatedAt = DateTime.UtcNow;
                 }
 
                 if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
                 {
-                    entry.Entity.LastModifiedBy = "henrique";
+                    entry.Entity.LastModifiedBy = currentUserService.UserId;
                     entry.Entity.LastModified = DateTime.UtcNow;
                 }
             }

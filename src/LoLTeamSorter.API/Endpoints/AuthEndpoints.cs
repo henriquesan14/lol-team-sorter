@@ -1,5 +1,6 @@
 ﻿using Carter;
 using LoLTeamSorter.Application.Commands.GenerateAccessToken;
+using LoLTeamSorter.Application.Commands.LoginDiscord;
 using MediatR;
 
 namespace LoLTeamSorter.API.Endpoints
@@ -15,6 +16,22 @@ namespace LoLTeamSorter.API.Endpoints
                 var result = await sender.Send(command);
 
                 return Results.Ok(result);
+            });
+
+            group.MapGet("/discord/callback", async (string code, ISender sender) =>
+            {
+                LoginDiscordCommand command = new LoginDiscordCommand(code);
+                var result = await sender.Send(command);
+
+                return Results.Redirect(result.RedirectAppUrl!);
+            });
+
+            group.MapPost("/discord/callback", async (string code, ISender sender) =>
+            {
+                LoginDiscordCommand command = new LoginDiscordCommand(code);
+                var result = await sender.Send(command);
+
+                return Results.Redirect(result.RedirectAppUrl!);
             });
         }
     }

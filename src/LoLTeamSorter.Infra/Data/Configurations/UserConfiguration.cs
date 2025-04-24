@@ -33,8 +33,16 @@ namespace LoLTeamSorter.Infra.Data.Configurations
                 .IsUnique();
 
             builder.Property(d => d.Password)
-                .IsRequired()
                 .HasMaxLength(100);
+
+            builder.Property(d => d.ExternalLogin)
+                .IsRequired();
+
+            builder.Property(d => d.DiscordId)
+                .HasMaxLength(50);
+
+            builder.Property(d => d.AvatarUrl)
+                .HasMaxLength(255);
 
             builder.HasOne(d => d.Group)
                 .WithMany(e => e.Users)
