@@ -33,7 +33,7 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
                 {
                     u => u.Permissions,
                 };
-                var group = await unitOfWork.Groups.GetSingleAsync(g => g.Name == "USER", includes: includesGroup);
+                var group = await unitOfWork.Groups.GetSingleAsync(g => g.Name == "MODERADOR", includes: includesGroup);
                 usuario = User.CreateExternal(
                     UserId.Of(Guid.NewGuid()),
                     name: userDiscord.Username,
