@@ -94,6 +94,9 @@ namespace LoLTeamSorter.Infra
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IDiscordAuthService, DiscordAuthService>();
 
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+
             return services;
         }
     }
