@@ -3,6 +3,7 @@ using System;
 using LoLTeamSorter.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LoLTeamSorter.Infra.Migrations
 {
     [DbContext(typeof(LoLTeamSorterDbContext))]
-    partial class LoLTeamSorterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250424035012_DiscordMigrate")]
+    partial class DiscordMigrate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -210,6 +213,7 @@ namespace LoLTeamSorter.Infra.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("DiscordId")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
