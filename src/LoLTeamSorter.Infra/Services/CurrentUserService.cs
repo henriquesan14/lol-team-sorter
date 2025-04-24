@@ -13,12 +13,15 @@ namespace LoLTeamSorter.Infra.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public Guid UserId
+        public Guid? UserId
         {
             get
             {
-                var userId = _httpContextAccessor.HttpContext?.User?.Claims.First(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
+                var userId = _httpContextAccessor.HttpContext?.User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (userId == null)
+                {
+                    return null;
+                }
                 return Guid.Parse(userId!);
             }
         }
