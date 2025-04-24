@@ -38,7 +38,7 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
                 if (existingByUsername is not null)
                 {
                     existingByUsername.SetDiscordId(userDiscord.Id);
-                    existingByUsername.SetAvatarUrl($"https://cdn.discordapp.com/avatars/{userDiscord.Id}/{userDiscord.Avatar}.png");
+                    if(!string.IsNullOrEmpty(userDiscord.Avatar)) existingByUsername.SetAvatarUrl($"https://cdn.discordapp.com/avatars/{userDiscord.Id}/{userDiscord.Avatar}.png");
                     existingByUsername.SetExternalLogin(true);
 
                     user = existingByUsername;
