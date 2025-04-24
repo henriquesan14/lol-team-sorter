@@ -23,6 +23,8 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
             var userDiscord = await discordAuthService.ObterUsuarioAsync(token.AccessToken);
             if (userDiscord is null) throw new IntegrationException("Erro ao obter usuário do Discord.");
 
+            var avatarUrl = $"https://cdn.discordapp.com/avatars/{userDiscord.Id}/{userDiscord.Avatar}.png";
+
             List<Expression<Func<User, object>>> includes = new List<Expression<Func<User, object>>>
             {
                 u => u.Group,
@@ -38,7 +40,7 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
                 if (existingByUsername is not null)
                 {
                     existingByUsername.SetDiscordId(userDiscord.Id);
-                    if(!string.IsNullOrEmpty(userDiscord.Avatar)) existingByUsername.SetAvatarUrl($"https://cdn.discordapp.com/avatars/{userDiscord.Id}/{userDiscord.Avatar}.png");
+                    if(!string.IsNullOrEmpty(userDiscord.Avatar)) existingByUsername.SetAvatarUrl(avatarUrl);
                     existingByUsername.SetExternalLogin(true);
 
                     user = existingByUsername;
@@ -59,9 +61,10 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
                         name: userDiscord.Username,
                         username: Username.Of(userDiscord.Username),
                         groupId: group.Id,
-                        discordId: userDiscord.Id,
-                        avatarUrl: $"https://cdn.discordapp.com/avatars/{userDiscord.Id}/{userDiscord.Avatar}.png"
+                        discordId: userDiscord.Id
                     );
+
+                    if (!string.IsNullOrEmpty(userDiscord.Avatar)) user.SetAvatarUrl(avatarUrl);
 
                     await unitOfWork.Users.AddAsync(user);
                     await unitOfWork.CompleteAsync();
