@@ -26,7 +26,7 @@ namespace LoLTeamSorter.Domain.Entities
             };
         }
 
-        public static User CreateExternal(UserId id, string name, Username username, GroupId groupId, string discordId, string avatarUrl)
+        public static User CreateExternal(UserId id, string name, Username username, GroupId groupId, string discordId)
         {
             return new User
             {
@@ -35,7 +35,6 @@ namespace LoLTeamSorter.Domain.Entities
                 Username = username,
                 GroupId = groupId,
                 DiscordId = discordId,
-                AvatarUrl = avatarUrl,
                 ExternalLogin = true,
                 Password = null
             };

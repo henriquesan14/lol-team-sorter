@@ -59,9 +59,10 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
                         name: userDiscord.Username,
                         username: Username.Of(userDiscord.Username),
                         groupId: group.Id,
-                        discordId: userDiscord.Id,
-                        avatarUrl: $"https://cdn.discordapp.com/avatars/{userDiscord.Id}/{userDiscord.Avatar}.png"
+                        discordId: userDiscord.Id
                     );
+
+                    if (!string.IsNullOrEmpty(userDiscord.Avatar)) user.SetAvatarUrl($"https://cdn.discordapp.com/avatars/{userDiscord.Id}/{userDiscord.Avatar}.png");
 
                     await unitOfWork.Users.AddAsync(user);
                     await unitOfWork.CompleteAsync();
