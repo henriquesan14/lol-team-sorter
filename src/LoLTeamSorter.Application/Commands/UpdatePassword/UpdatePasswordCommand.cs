@@ -2,7 +2,7 @@
 
 namespace LoLTeamSorter.Application.Commands.UpdatePassword
 {
-    public record UpdatePasswordCommand(string? CurrentPassword, string NewPassword) : ICommand
+    public record UpdatePasswordCommand(string? CurrentPassword, string Password) : ICommand
     {
     }
 }

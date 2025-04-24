@@ -22,7 +22,7 @@ namespace LoLTeamSorter.Application.Commands.UpdatePassword
                     throw new InvalidCurrentPasswordException("Senha atual incorreta.");
             }
 
-            user.UpdatePassword(BCrypt.Net.BCrypt.HashPassword(request.NewPassword, 8));
+            user.UpdatePassword(BCrypt.Net.BCrypt.HashPassword(request.Password, 8));
             await unitOfWork.CompleteAsync();
 
             return Unit.Value;
