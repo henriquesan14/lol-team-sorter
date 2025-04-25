@@ -2,6 +2,7 @@
 using LoLTeamSorter.Application.Commands.GenerateAccessToken;
 using LoLTeamSorter.Application.Commands.LoginDiscord;
 using LoLTeamSorter.Application.Commands.RenewRefreshToken;
+using LoLTeamSorter.Application.Commands.RevokeRefreshToken;
 using MediatR;
 
 namespace LoLTeamSorter.API.Endpoints
@@ -32,6 +33,13 @@ namespace LoLTeamSorter.API.Endpoints
                 var result = await sender.Send(command);
 
                 return Results.Ok(result);
+            });
+
+            group.MapPost("/logout", async (RevokeRefreshTokenCommand command, ISender sender) =>
+            {
+                var result = await sender.Send(command);
+
+                return Results.NoContent();
             });
         }
     }
