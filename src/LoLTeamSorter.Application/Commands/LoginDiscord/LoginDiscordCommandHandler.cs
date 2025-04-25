@@ -78,17 +78,18 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
 
-            var authResponse = new AuthResponseViewModel
+            var json = JsonSerializer.Serialize(new {
+                AccessToken = jwt,
+                User = user.ToViewModel()
+            }, options);
+            var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
+
+            return new AuthResponseViewModel
             (
                 AccessToken: jwt,
-                User: user.ToViewModel()
+                User: user.ToViewModel(),
+                RedirectAppUrl: $"{configuration["Discord:RedirectAppUrl"]}#data={base64}"
             );
-
-            var json = JsonSerializer.Serialize(authResponse, options);
-            var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
-            authResponse.RedirectAppUrl = $"{configuration["Discord:RedirectAppUrl"]}#data={base64}";
-
-            return authResponse;
         }
     }
 }
