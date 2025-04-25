@@ -1,5 +1,7 @@
 ﻿using LoLTeamSorter.Application.Contracts.Services;
+using LoLTeamSorter.Application.Contracts.Services.Response;
 using LoLTeamSorter.Domain.Entities;
+using LoLTeamSorter.Domain.ValueObjects;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,10 +12,13 @@ namespace LoLTeamSorter.Infra.Services
 {
     public class TokenService(IConfiguration _configuration) : ITokenService
     {
-        public string GenerateAccessToken(User user)
+        public AuthTokenResult GenerateAccessToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["TokenSettings:Secret"]!);
+            var accessTokenExpiration = DateTime.UtcNow.AddHours(12);
+            var refreshTokenExpiration = DateTime.UtcNow.AddDays(7);
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -21,8 +26,8 @@ namespace LoLTeamSorter.Infra.Services
                     new Claim(ClaimTypes.NameIdentifier, user.Id.Value.ToString()),
                     new Claim(ClaimTypes.Name, user.Username.Value),
                 }),
-                NotBefore = DateTime.Now, // Usando horário local
-                Expires = DateTime.Now.AddHours(12),
+                NotBefore = DateTime.Now,
+                Expires = accessTokenExpiration,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var roles = new Claim[] { }.ToList();
@@ -33,7 +38,11 @@ namespace LoLTeamSorter.Infra.Services
 
             tokenDescriptor.Subject.AddClaims(roles);
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var accessToken = tokenHandler.WriteToken(token);
+
+            var refreshToken = Guid.NewGuid().ToString();
+
+            return new AuthTokenResult(accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration);
         }
     }
 }

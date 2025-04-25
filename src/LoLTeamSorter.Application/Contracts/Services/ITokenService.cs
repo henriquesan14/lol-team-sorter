@@ -1,9 +1,10 @@
-﻿using LoLTeamSorter.Domain.Entities;
+﻿using LoLTeamSorter.Application.Contracts.Services.Response;
+using LoLTeamSorter.Domain.Entities;
 
 namespace LoLTeamSorter.Application.Contracts.Services
 {
     public interface ITokenService
     {
-        string GenerateAccessToken(User user);
+        AuthTokenResult GenerateAccessToken(User user);
     }
 }

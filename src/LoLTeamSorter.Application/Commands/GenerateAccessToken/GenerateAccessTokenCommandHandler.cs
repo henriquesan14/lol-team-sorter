@@ -28,8 +28,18 @@ namespace LoLTeamSorter.Application.Commands.GenerateAccessToken
             {
                 throw new UnauthorizedException();
             }
-            var accesstoken = tokenService.GenerateAccessToken(userExists);
-            var viewModel = new AuthResponseViewModel(accesstoken, userExists.ToViewModel(), null);
+            var authToken = tokenService.GenerateAccessToken(userExists);
+
+            var refreshToken = RefreshToken.Create(
+                id: RefreshTokenId.Of(Guid.NewGuid()),
+                token: authToken.RefreshToken,
+                userId: UserId.Of(userExists.Id.Value),
+                expiresAt: authToken.RefreshTokenExpiresAt
+                );
+            await unitOfWork.RefreshTokens.AddAsync(refreshToken);
+            await unitOfWork.CompleteAsync();
+
+            var viewModel = new AuthResponseViewModel(authToken.AccessToken, authToken.RefreshToken, authToken.RefreshTokenExpiresAt, userExists.ToViewModel(), null);
             return viewModel;
         }
     }

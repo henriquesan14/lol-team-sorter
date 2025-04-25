@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using System.Text.Json;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using LoLTeamSorter.Application.Contracts.Services.Response;
 
 namespace LoLTeamSorter.Application.Commands.LoginDiscord
 {
@@ -25,22 +26,22 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
 
             var avatarUrl = $"https://cdn.discordapp.com/avatars/{userDiscord.Id}/{userDiscord.Avatar}.png";
 
-            List<Expression<Func<User, object>>> includes = new List<Expression<Func<User, object>>>
+            List<Expression<Func<User, object>>> userIncludes = new List<Expression<Func<User, object>>>
             {
                 u => u.Group,
                 u => u.Group.Permissions,
             };
 
-            var user = await unitOfWork.Users.GetSingleAsync(u => u.DiscordId == userDiscord.Id, includes: includes);
+            var user = await unitOfWork.Users.GetSingleAsync(u => u.DiscordId == userDiscord.Id, includes: userIncludes);
 
             if (user is null)
             {
-                var existingByUsername = await unitOfWork.Users.GetSingleAsync(u => u.Username == Username.Of(userDiscord.Username), includes: includes);
+                var existingByUsername = await unitOfWork.Users.GetSingleAsync(u => u.Username == Username.Of(userDiscord.Username), includes: userIncludes);
 
                 if (existingByUsername is not null)
                 {
                     existingByUsername.SetDiscordId(userDiscord.Id);
-                    if(!string.IsNullOrEmpty(userDiscord.Avatar)) existingByUsername.SetAvatarUrl(avatarUrl);
+                    if (HasAvatar(userDiscord)) existingByUsername.SetAvatarUrl(avatarUrl);
                     existingByUsername.SetExternalLogin(true);
 
                     user = existingByUsername;
@@ -49,12 +50,12 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
                 }
                 else
                 {
-                    List<Expression<Func<Group, object>>> includesGroup = new List<Expression<Func<Group, object>>>
+                    List<Expression<Func<Group, object>>> groupIncludes = new List<Expression<Func<Group, object>>>
                     {
                         u => u.Permissions,
                     };
 
-                    var group = await unitOfWork.Groups.GetSingleAsync(g => g.Name == "MODERADOR", includes: includesGroup);
+                    var group = await unitOfWork.Groups.GetSingleAsync(g => g.Name == "MODERADOR", includes: groupIncludes);
 
                     user = User.CreateExternal(
                         UserId.Of(Guid.NewGuid()),
@@ -64,32 +65,46 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
                         discordId: userDiscord.Id
                     );
 
-                    if (!string.IsNullOrEmpty(userDiscord.Avatar)) user.SetAvatarUrl(avatarUrl);
+                    if (HasAvatar(userDiscord)) user.SetAvatarUrl(avatarUrl);
 
                     await unitOfWork.Users.AddAsync(user);
                     await unitOfWork.CompleteAsync();
                 }
             }
 
-            var jwt = tokenService.GenerateAccessToken(user);
+            var authToken = tokenService.GenerateAccessToken(user);
 
+            return new AuthResponseViewModel
+            (
+                AccessToken: authToken.AccessToken,
+                RefreshToken: authToken.RefreshToken,
+                RefreshTokenExpiresAt: authToken.RefreshTokenExpiresAt,
+                User: user.ToViewModel(),
+                RedirectAppUrl: GenerateRedirectUrl(authToken.AccessToken, authToken.RefreshToken, authToken.RefreshTokenExpiresAt, user)
+            );
+        }
+
+        private bool HasAvatar(DiscordUserResponse userDiscord) =>
+    !       string.IsNullOrEmpty(userDiscord.Avatar);
+
+        private string GenerateRedirectUrl(string accessToken, string refreshToken, DateTime refreshTokenExpiresAt, User user)
+        {
             var options = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
 
-            var json = JsonSerializer.Serialize(new {
-                AccessToken = jwt,
+            var json = JsonSerializer.Serialize(new
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshToken,
+                RefreshTokenExpiresAt = refreshTokenExpiresAt,
                 User = user.ToViewModel()
             }, options);
+
             var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
 
-            return new AuthResponseViewModel
-            (
-                AccessToken: jwt,
-                User: user.ToViewModel(),
-                RedirectAppUrl: $"{configuration["Discord:RedirectAppUrl"]}#data={base64}"
-            );
+            return $"{configuration["Discord:RedirectAppUrl"]}#data={base64}";
         }
     }
 }
