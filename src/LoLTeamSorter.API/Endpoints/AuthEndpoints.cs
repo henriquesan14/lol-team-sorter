@@ -1,6 +1,7 @@
 ﻿using Carter;
 using LoLTeamSorter.Application.Commands.GenerateAccessToken;
 using LoLTeamSorter.Application.Commands.LoginDiscord;
+using LoLTeamSorter.Application.Commands.RenewRefreshToken;
 using MediatR;
 
 namespace LoLTeamSorter.API.Endpoints
@@ -24,6 +25,13 @@ namespace LoLTeamSorter.API.Endpoints
                 var result = await sender.Send(command);
 
                 return Results.Redirect(result.RedirectAppUrl!);
+            });
+
+            group.MapPost("/refresh-token", async (RefreshTokenCommand command, ISender sender) =>
+            {
+                var result = await sender.Send(command);
+
+                return Results.Ok(result);
             });
         }
     }
