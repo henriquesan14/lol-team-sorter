@@ -25,14 +25,6 @@ namespace LoLTeamSorter.API.Endpoints
 
                 return Results.Redirect(result.RedirectAppUrl!);
             });
-
-            group.MapPost("/discord/callback", async (string code, ISender sender) =>
-            {
-                LoginDiscordCommand command = new LoginDiscordCommand(code);
-                var result = await sender.Send(command);
-
-                return Results.Redirect(result.RedirectAppUrl!);
-            });
         }
     }
 }
