@@ -29,7 +29,7 @@ namespace LoLTeamSorter.Application.Commands.GenerateAccessToken
                 throw new UnauthorizedException();
             }
             var accesstoken = tokenService.GenerateAccessToken(userExists);
-            var viewModel = new AuthResponseViewModel(accesstoken, userExists.ToViewModel());
+            var viewModel = new AuthResponseViewModel(accesstoken, userExists.ToViewModel(), null);
             return viewModel;
         }
     }
