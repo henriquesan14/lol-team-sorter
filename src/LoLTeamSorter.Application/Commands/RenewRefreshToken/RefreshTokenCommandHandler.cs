@@ -10,12 +10,12 @@ using System.Linq.Expressions;
 
 namespace LoLTeamSorter.Application.Commands.RenewRefreshToken
 {
-    public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService) : ICommandHandler<RefreshTokenCommand, AuthResponseViewModel>
+    public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, ICurrentUserService currentUserService) : ICommandHandler<RefreshTokenCommand, AuthResponseViewModel>
     {
         public async Task<AuthResponseViewModel> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
             var existingToken = await unitOfWork.RefreshTokens
-                .GetSingleAsync(rt => rt.Token == request.refreshToken, disableTracking: true);
+                .GetSingleAsync(rt => rt.Token == request.refreshToken);
 
             if (existingToken is null || existingToken.IsExpired || existingToken.IsRevoked)
             {
@@ -34,11 +34,12 @@ namespace LoLTeamSorter.Application.Commands.RenewRefreshToken
                 throw new UserNotFoundException(existingToken.UserId.Value);
             }
 
-            existingToken.Revoke();
-            unitOfWork.RefreshTokens.Update(existingToken);
-
             var authToken = tokenService.GenerateAccessToken(user);
-            var newRefreshToken = RefreshToken.Create(RefreshTokenId.Of(Guid.NewGuid()), authToken.RefreshToken, user.Id, DateTime.UtcNow.AddDays(7));
+            var newRefreshToken = RefreshToken.Create(RefreshTokenId.Of(Guid.NewGuid()), authToken.RefreshToken, user.Id, currentUserService.IpAddress!, DateTime.Now.AddDays(7));
+
+            existingToken.Revoke(currentUserService.IpAddress!);
+            existingToken.SetReplacedByToken(newRefreshToken.Token);
+            
 
             await unitOfWork.RefreshTokens.AddAsync(newRefreshToken);
             await unitOfWork.CompleteAsync();

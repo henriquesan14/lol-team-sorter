@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 
 namespace LoLTeamSorter.Application.Commands.GenerateAccessToken
 {
-    public class GenerateAccessTokenCommandHandler(ITokenService tokenService, IUnitOfWork unitOfWork) : ICommandHandler<GenerateAccessTokenCommand, AuthResponseViewModel>
+    public class GenerateAccessTokenCommandHandler(ITokenService tokenService, IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : ICommandHandler<GenerateAccessTokenCommand, AuthResponseViewModel>
     {
         public async Task<AuthResponseViewModel> Handle(GenerateAccessTokenCommand request, CancellationToken cancellationToken)
         {
@@ -34,7 +34,8 @@ namespace LoLTeamSorter.Application.Commands.GenerateAccessToken
                 id: RefreshTokenId.Of(Guid.NewGuid()),
                 token: authToken.RefreshToken,
                 userId: UserId.Of(userExists.Id.Value),
-                expiresAt: authToken.RefreshTokenExpiresAt
+                expiresAt: authToken.RefreshTokenExpiresAt,
+                createdByIp: currentUserService.IpAddress!
                 );
             await unitOfWork.RefreshTokens.AddAsync(refreshToken);
             await unitOfWork.CompleteAsync();

@@ -33,12 +33,14 @@ namespace LoLTeamSorter.API
             services.AddHealthChecks()
                 .AddNpgSql(configuration.GetConnectionString("DbConnection")!);
 
+            services.AddHangfireConfig(configuration);
+
             services.AddRateLimitingConfig(builder.Configuration);
 
             return services;
         }
 
-        public static WebApplication UseApiServices(this WebApplication app)
+        public static WebApplication UseApiServices(this WebApplication app, IConfiguration configuration)
         {
             app.MapCarter();
 
@@ -56,6 +58,9 @@ namespace LoLTeamSorter.API
             app.UseAuthorization();
 
             app.UseIpRateLimiting();
+
+            app.UseHangfireDashboardWithAuth(configuration);
+            app.UseRecurringJobs();
 
             app.UseHealthChecks("/health", new HealthCheckOptions
             {

@@ -2,6 +2,7 @@
 using LoLTeamSorter.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace LoLTeamSorter.Infra.Data
 {
@@ -24,6 +25,29 @@ namespace LoLTeamSorter.Infra.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            foreach (var entityType in builder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+                    {
+                        property.SetColumnType("timestamp");
+                    }
+                }
+            }
+
+            foreach (var ownedType in builder.Model.GetEntityTypes().Where(t => t.IsOwned()))
+            {
+                foreach (var property in ownedType.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+                    {
+                        property.SetColumnType("timestamp");
+                    }
+                }
+            }
+
             base.OnModelCreating(builder);
         }
     }

@@ -1,7 +1,6 @@
 ﻿using LoLTeamSorter.Application.Contracts.Services;
 using LoLTeamSorter.Application.Contracts.Services.Response;
 using LoLTeamSorter.Domain.Entities;
-using LoLTeamSorter.Domain.ValueObjects;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,8 +15,8 @@ namespace LoLTeamSorter.Infra.Services
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["TokenSettings:Secret"]!);
-            var accessTokenExpiration = DateTime.UtcNow.AddHours(12);
-            var refreshTokenExpiration = DateTime.UtcNow.AddDays(7);
+            var accessTokenExpiration = DateTime.Now.AddHours(12);
+            var refreshTokenExpiration = DateTime.Now.AddDays(7);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

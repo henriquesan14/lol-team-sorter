@@ -25,5 +25,22 @@ namespace LoLTeamSorter.Infra.Services
                 return Guid.Parse(userId!);
             }
         }
+
+        public string? IpAddress
+        {
+            get
+            {
+                var httpContext = _httpContextAccessor.HttpContext;
+                if (httpContext == null)
+                    return null;
+
+                if (httpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var forwardedFor))
+                {
+                    return forwardedFor.FirstOrDefault();
+                }
+
+                return httpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString();
+            }
+        }
     }
 }

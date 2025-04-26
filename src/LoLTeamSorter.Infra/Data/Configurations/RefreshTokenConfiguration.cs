@@ -13,7 +13,7 @@ namespace LoLTeamSorter.Infra.Data.Configurations
 
             builder.Property(rt => rt.Id)
                 .HasConversion(
-                    id => id.Value, 
+                    id => id.Value,
                     value => RefreshTokenId.Of(value))
                 .ValueGeneratedNever();
 
@@ -26,17 +26,25 @@ namespace LoLTeamSorter.Infra.Data.Configurations
             builder.Property(rt => rt.ExpiresAt)
                 .IsRequired();
 
-            builder.Property(rt => rt.IsRevoked)
+            builder.Property(rt => rt.RevokedAt)
+                .IsRequired(false);
+
+            builder.Property(rt => rt.CreatedByIp)
                 .IsRequired();
 
-            // Índice para facilitar busca por token
+            builder.Property(rt => rt.ReplacedByToken)
+                .IsRequired(false);
+
+            builder.Property(rt => rt.RevokedByIp)
+                .IsRequired(false);
+
             builder.HasIndex(rt => rt.Token).IsUnique();
 
             builder.HasOne(rt => rt.User)
-            .WithMany(u => u.RefreshTokens)
-            .HasForeignKey(rt => rt.UserId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
+                .WithMany(u => u.RefreshTokens)
+                .HasForeignKey(rt => rt.UserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
