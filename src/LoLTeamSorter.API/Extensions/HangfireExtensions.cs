@@ -54,7 +54,7 @@ namespace LoLTeamSorter.API.Extensions
             RecurringJob.AddOrUpdate<ITokenCleanupService>(
                 "CheckUpcomingEvents",
                 service => service.CleanupExpiredAndRevokedTokensAsync(),
-                "55 11 * * *");
+                Cron.Daily);
 
             return app;
         }

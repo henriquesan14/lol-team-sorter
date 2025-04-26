@@ -14,7 +14,8 @@ using LoLTeamSorter.Application.Contracts.Services.Response;
 
 namespace LoLTeamSorter.Application.Commands.LoginDiscord
 {
-    public class LoginDiscordCommandHandler(IDiscordAuthService discordAuthService, IUnitOfWork unitOfWork, ITokenService tokenService, IConfiguration configuration) : ICommandHandler<LoginDiscordCommand, AuthResponseViewModel>
+    public class LoginDiscordCommandHandler(IDiscordAuthService discordAuthService, IUnitOfWork unitOfWork, ITokenService tokenService,
+        IConfiguration configuration, ICurrentUserService currentUserService) : ICommandHandler<LoginDiscordCommand, AuthResponseViewModel>
     {
         public async Task<AuthResponseViewModel> Handle(LoginDiscordCommand request, CancellationToken cancellationToken)
         {
@@ -68,11 +69,20 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
                     if (HasAvatar(userDiscord)) user.SetAvatarUrl(avatarUrl);
 
                     await unitOfWork.Users.AddAsync(user);
-                    await unitOfWork.CompleteAsync();
                 }
             }
 
             var authToken = tokenService.GenerateAccessToken(user);
+
+            var refreshToken = RefreshToken.Create(
+                id: RefreshTokenId.Of(Guid.NewGuid()),
+                token: authToken.RefreshToken,
+                userId: UserId.Of(user.Id.Value),
+                expiresAt: authToken.RefreshTokenExpiresAt,
+                createdByIp: currentUserService.IpAddress!
+                );
+            await unitOfWork.RefreshTokens.AddAsync(refreshToken);
+            await unitOfWork.CompleteAsync();
 
             return new AuthResponseViewModel
             (
