@@ -41,6 +41,7 @@ namespace LoLTeamSorter.Infra
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPermissionRepository, PermissionRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -93,6 +94,7 @@ namespace LoLTeamSorter.Infra
             services.AddScoped<IRiotApiService, RiotApiService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IDiscordAuthService, DiscordAuthService>();
+            services.AddScoped<ITokenCleanupService, TokenCleanupService>();
 
             services.AddHttpContextAccessor();
             services.AddScoped<ICurrentUserService, CurrentUserService>();

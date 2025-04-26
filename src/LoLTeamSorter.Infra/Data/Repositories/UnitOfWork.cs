@@ -8,7 +8,7 @@ namespace LoLTeamSorter.Infra.Data.Repositories
         private IDbContextTransaction _transaction;
         private readonly LoLTeamSorterDbContext _dbContext;
 
-        public UnitOfWork(LoLTeamSorterDbContext dbContext, IPlayerRepository players, ITeamRepository teams, IMatchmakingRepository matchmakings, IUserRepository users, IGroupRepository groups, IPermissionRepository permissions)
+        public UnitOfWork(LoLTeamSorterDbContext dbContext, IPlayerRepository players, ITeamRepository teams, IMatchmakingRepository matchmakings, IUserRepository users, IGroupRepository groups, IPermissionRepository permissions, IRefreshTokenRepository refreshTokens)
         {
             _dbContext = dbContext;
             Players = players;
@@ -17,6 +17,7 @@ namespace LoLTeamSorter.Infra.Data.Repositories
             Users = users;
             Groups = groups;
             Permissions = permissions;
+            RefreshTokens = refreshTokens;
         }
 
         public IPlayerRepository Players { get; }
@@ -25,6 +26,7 @@ namespace LoLTeamSorter.Infra.Data.Repositories
         public IUserRepository Users { get; }
         public IGroupRepository Groups { get; }
         public IPermissionRepository Permissions { get; }
+        public IRefreshTokenRepository RefreshTokens { get; }
 
         public async Task BeginTransaction()
         {

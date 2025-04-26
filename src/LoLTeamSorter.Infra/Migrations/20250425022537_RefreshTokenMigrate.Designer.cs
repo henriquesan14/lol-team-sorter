@@ -3,6 +3,7 @@ using System;
 using LoLTeamSorter.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LoLTeamSorter.Infra.Migrations
 {
     [DbContext(typeof(LoLTeamSorterDbContext))]
-    partial class LoLTeamSorterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250425022537_RefreshTokenMigrate")]
+    partial class RefreshTokenMigrate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,13 +46,13 @@ namespace LoLTeamSorter.Infra.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("LastModified")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
@@ -73,13 +76,13 @@ namespace LoLTeamSorter.Infra.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("LastModified")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
@@ -106,13 +109,13 @@ namespace LoLTeamSorter.Infra.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("LastModified")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
@@ -137,13 +140,13 @@ namespace LoLTeamSorter.Infra.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("LastModified")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
@@ -178,32 +181,22 @@ namespace LoLTeamSorter.Infra.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CreatedByIp")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastModified")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("ReplacedByToken")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("RevokedAt")
-                        .HasColumnType("timestamp");
-
-                    b.Property<string>("RevokedByIp")
-                        .HasColumnType("text");
 
                     b.Property<string>("Token")
                         .IsRequired()
@@ -228,13 +221,13 @@ namespace LoLTeamSorter.Infra.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("LastModified")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
@@ -254,7 +247,7 @@ namespace LoLTeamSorter.Infra.Migrations
                         .HasColumnType("character varying(255)");
 
                     b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
@@ -270,7 +263,7 @@ namespace LoLTeamSorter.Infra.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("LastModified")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");

@@ -13,6 +13,7 @@ namespace LoLTeamSorter.Domain.Entities
         public string? DiscordId { get; private set; } = default!;
         public string? AvatarUrl { get; private set; } = default!;
         public bool ExternalLogin { get; private set; } = default;
+        public ICollection<RefreshToken> RefreshTokens { get; private set; } = new List<RefreshToken>();
 
         public static User Create(UserId id, string name, Username username, string password, GroupId groupId)
         {

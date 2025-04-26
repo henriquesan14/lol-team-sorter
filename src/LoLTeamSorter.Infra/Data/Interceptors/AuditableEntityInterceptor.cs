@@ -28,14 +28,14 @@ namespace LoLTeamSorter.Infra.Data.Interceptors
             {
                 if (entry.State == EntityState.Added)
                 {
-                    if(currentUserService != null) entry.Entity.CreatedBy = currentUserService.UserId;
-                    entry.Entity.CreatedAt = DateTime.UtcNow;
+                    if(currentUserService!.UserId != null) entry.Entity.CreatedBy = currentUserService.UserId;
+                    entry.Entity.CreatedAt = DateTime.Now;
                 }
 
                 if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
                 {
-                    if (currentUserService != null)  entry.Entity.LastModifiedBy = currentUserService.UserId;
-                    entry.Entity.LastModified = DateTime.UtcNow;
+                    if (currentUserService!.UserId != null)  entry.Entity.LastModifiedBy = currentUserService.UserId;
+                    entry.Entity.LastModified = DateTime.Now;
                 }
             }
         }
