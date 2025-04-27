@@ -19,6 +19,7 @@ namespace LoLTeamSorter.Application.Extensions
         {
             return new TeamViewModel
             (
+                Id: team.Id.Value,
                 Players: team.Players.ToViewModelList().ToList(),
                 TotalStars: team.TotalStars,
                 AverageTierWeight: team.AverageTierWeight

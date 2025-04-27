@@ -9,6 +9,7 @@ namespace LoLTeamSorter.Domain.Entities
         public Team BlueTeam { get; private set; } = default!;
         public Team RedTeam { get; private set; } = default!;
         public ModeEnum Mode { get; private set; } = default!;
+        public Team? WinningTeam { get; private set; } = default!;
 
         public static Matchmaking Create(MatchmakingId id, ModeEnum mode, Team blueTeam, Team redTeam)
         {
@@ -18,6 +19,15 @@ namespace LoLTeamSorter.Domain.Entities
                 BlueTeam = blueTeam,
                 RedTeam = redTeam
             };
+        }
+
+        public void FinishMatch(Team winner)
+        {
+            WinningTeam = winner;
+            foreach (var player in winner.Players)
+            {
+                player.IncrementVictories();
+            }
         }
     }
 }

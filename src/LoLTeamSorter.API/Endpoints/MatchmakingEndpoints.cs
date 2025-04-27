@@ -1,6 +1,7 @@
 ﻿using Carter;
 using LoLTeamSorter.Application.Commands.DeleteMatchmaking;
 using LoLTeamSorter.Application.Commands.DeleteMatchmakings;
+using LoLTeamSorter.Application.Commands.FinishMatch;
 using LoLTeamSorter.Application.Commands.GenerateMatchmaking;
 using LoLTeamSorter.Application.Pagination;
 using LoLTeamSorter.Application.Queries.GetMatchmakings;
@@ -40,6 +41,13 @@ namespace LoLTeamSorter.API.Endpoints
             });
 
             group.MapPost("/delete", [Authorize(Policy = "DeleteMatchmaking")] async (DeleteMatchmakingsCommand command, ISender sender) =>
+            {
+                await sender.Send(command);
+
+                return Results.NoContent();
+            });
+
+            group.MapPost("/finish", [Authorize(Policy = "ViewMatchmaking")] async (FinishMatchCommand command, ISender sender) =>
             {
                 await sender.Send(command);
 

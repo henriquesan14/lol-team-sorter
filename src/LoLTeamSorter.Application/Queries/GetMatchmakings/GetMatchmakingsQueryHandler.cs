@@ -21,6 +21,8 @@ namespace LoLTeamSorter.Application.Queries.GetMatchmakings
                 e => e.BlueTeam.Players,
                 e => e.RedTeam,
                 e => e.RedTeam.Players,
+                e => e.WinningTeam!,
+                e => e.WinningTeam!.Players,
             };
 
             Func<IQueryable<Matchmaking>, IOrderedQueryable<Matchmaking>> orderBy = m => m.OrderByDescending(mm => mm.CreatedAt!.Value);
