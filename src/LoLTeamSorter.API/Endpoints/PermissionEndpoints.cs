@@ -1,5 +1,6 @@
 ﻿using Carter;
 using LoLTeamSorter.Application.Queries.GetPermissions;
+using LoLTeamSorter.Application.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
@@ -17,7 +18,9 @@ namespace LoLTeamSorter.API.Endpoints
                 var result = await sender.Send(query);
 
                 return Results.Ok(result);
-            });
+            })
+                .WithName("GetPermissions")
+                .Produces<List<PermissionViewModel>>(StatusCodes.Status200OK);
         }
     }
 }

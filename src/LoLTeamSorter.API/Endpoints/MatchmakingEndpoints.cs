@@ -3,8 +3,10 @@ using LoLTeamSorter.Application.Commands.DeleteMatchmaking;
 using LoLTeamSorter.Application.Commands.DeleteMatchmakings;
 using LoLTeamSorter.Application.Commands.FinishMatch;
 using LoLTeamSorter.Application.Commands.GenerateMatchmaking;
+using LoLTeamSorter.Application.Contracts.Services.Response;
 using LoLTeamSorter.Application.Pagination;
 using LoLTeamSorter.Application.Queries.GetMatchmakings;
+using LoLTeamSorter.Application.ViewModels;
 using LoLTeamSorter.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -30,7 +32,9 @@ namespace LoLTeamSorter.API.Endpoints
                 var result = await sender.Send(query);
 
                 return Results.Ok(result);
-            });
+            })
+                .WithName("GetMatchmakings")
+                .Produces<List<MatchmakingViewModel>>(StatusCodes.Status200OK);
 
             group.MapDelete("/{id}", [Authorize(Policy = "DeleteMatchmaking")] async (Guid id, ISender sender) =>
             {
