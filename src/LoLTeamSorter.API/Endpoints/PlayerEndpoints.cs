@@ -5,9 +5,11 @@ using LoLTeamSorter.Application.Commands.DeletePlayers;
 using LoLTeamSorter.Application.Commands.UpdatePlayer;
 using LoLTeamSorter.Application.Commands.UpdateRankedTier;
 using LoLTeamSorter.Application.Commands.UpdateRankedTiers;
+using LoLTeamSorter.Application.Contracts.Services.Response;
 using LoLTeamSorter.Application.Queries.GetChampionMasteries;
 using LoLTeamSorter.Application.Queries.GetChampionRankedStats;
 using LoLTeamSorter.Application.Queries.GetPlayers;
+using LoLTeamSorter.Application.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
@@ -26,13 +28,14 @@ namespace LoLTeamSorter.API.Endpoints
                 return Results.Created($"players/{result}", result);
             });
 
-            group.MapGet("/", [Authorize(Policy = "ViewPlayer")] async (ISender sender) =>
+            group.MapGet("/", [Authorize(Policy = "ViewPlayer")] async ([AsParameters] GetPlayersQuery query, ISender sender) =>
             {
-                var query = new GetPlayersQuery();
                 var result = await sender.Send(query);
 
                 return Results.Ok(result);
-            });
+            })
+                .WithName("GetPlayers")
+                .Produces<IEnumerable<PlayerViewModel>>(StatusCodes.Status200OK);
 
             group.MapPut("/", [Authorize(Policy = "EditPlayer")] async (UpdatePlayerCommand command, ISender sender) =>
             {
@@ -75,14 +78,18 @@ namespace LoLTeamSorter.API.Endpoints
                 var query = new GetChampionMasteriesQuery(riotId);
                 var result = await sender.Send(query);
                 return Results.Ok(result);
-            });
+            })
+                .WithName("GetChampionMasteries")
+                .Produces<List<ChampionMasteryDto>>(StatusCodes.Status200OK);
 
             group.MapGet("/{riotId}/champion-ranked-stats", [Authorize(Policy = "ViewPlayer")] async (string riotId, ISender sender) =>
             {
                 var query = new GetChampionRankedStatsQuery(riotId);
                 var result = await sender.Send(query);
                 return Results.Ok(result);
-            });
+            })
+                .WithName("GetChampionRankedStats")
+                .Produces<List<ChampionRankedStatsDto>>(StatusCodes.Status200OK);
         }
     }
 }

@@ -28,6 +28,10 @@ namespace LoLTeamSorter.Infra.Data.Configurations
             builder.HasOne(m => m.RedTeam)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(m => m.WinningTeam)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -4,6 +4,7 @@ using LoLTeamSorter.Application.Commands.DeleteUser;
 using LoLTeamSorter.Application.Commands.DeleteUsers;
 using LoLTeamSorter.Application.Commands.UpdateUser;
 using LoLTeamSorter.Application.Queries.GetUsers;
+using LoLTeamSorter.Application.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
@@ -21,7 +22,9 @@ namespace LoLTeamSorter.API.Endpoints
                 var result = await sender.Send(query);
 
                 return Results.Ok(result);
-            });
+            })
+                .WithName("GetUsers")
+                .Produces<List<UserViewModel>>(StatusCodes.Status200OK);
 
             group.MapPost("/", [Authorize(Policy = "CreateUser")] async (CreateUserCommand command, ISender sender) =>
             {

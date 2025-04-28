@@ -56,6 +56,10 @@ namespace LoLTeamSorter.Infra.Data.Configurations
 
             builder.Property(p => p.RiotId)
                 .IsRequired();
+
+            builder.Property(p => p.Victories)
+            .IsRequired()
+            .HasDefaultValue(0);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace LoLTeamSorter.Domain.Entities
         public RankedTier RankedTier { get; private set; } = default!;
         public int Stars { get; private set; } = default!;
         public string RiotId { get; private set; } = default!;
+        public int Victories { get; private set; } = 0;
 
         public List<Team> Teams { get; private set; } = new();
 
@@ -52,6 +53,11 @@ namespace LoLTeamSorter.Domain.Entities
         public void SetRiotId(string riotId)
         {
             RiotId = riotId;
+        }
+
+        public void IncrementVictories()
+        {
+            Victories++;
         }
     }
 }

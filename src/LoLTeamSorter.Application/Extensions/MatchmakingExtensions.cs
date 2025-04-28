@@ -22,6 +22,7 @@ namespace LoLTeamSorter.Application.Extensions
                 Id: matchmaking.Id.Value,
                 BlueTeam: matchmaking.BlueTeam.ToViewModel(),
                 RedTeam: matchmaking.RedTeam.ToViewModel(),
+                WinningTeam: matchmaking.WinningTeam?.ToViewModel(),
                 Mode: matchmaking.Mode,
                 CreatedAt: matchmaking.CreatedAt!.Value
             );

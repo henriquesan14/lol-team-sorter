@@ -3,8 +3,10 @@ using LoLTeamSorter.Application.Commands.CreateGroup;
 using LoLTeamSorter.Application.Commands.DeleteGroup;
 using LoLTeamSorter.Application.Commands.DeleteGroups;
 using LoLTeamSorter.Application.Commands.UpdateGroup;
+using LoLTeamSorter.Application.Contracts.Services.Response;
 using LoLTeamSorter.Application.Queries.GetGroupById;
 using LoLTeamSorter.Application.Queries.GetGroups;
+using LoLTeamSorter.Application.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
@@ -22,14 +24,19 @@ namespace LoLTeamSorter.API.Endpoints
                 var result = await sender.Send(query);
 
                 return Results.Ok(result);
-            });
+            })
+                .WithName("GetGroups")
+                .Produces<List<GroupViewModel>>(StatusCodes.Status200OK);
+
             group.MapGet("/{id}", [Authorize(Policy = "ViewUser")] async (Guid id, ISender sender) =>
             {
                 var query = new GetGroupByIdQuery(id);
                 var result = await sender.Send(query);
 
                 return Results.Ok(result);
-            });
+            })
+                .WithName("GetGroupById")
+                .Produces<GroupViewModel>(StatusCodes.Status200OK);
 
             group.MapPost("/", [Authorize(Policy = "CreateUser")] async (CreateGroupCommand command, ISender sender) =>
             {
