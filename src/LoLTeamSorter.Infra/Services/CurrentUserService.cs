@@ -77,8 +77,21 @@ namespace LoLTeamSorter.Infra.Services
 
         public void RemoveCookiesToken()
         {
-            _httpContextAccessor.HttpContext?.Response.Cookies.Delete("refresh_token");
-            _httpContextAccessor.HttpContext?.Response.Cookies.Delete("access_token");
+            _httpContextAccessor.HttpContext?.Response.Cookies.Delete("refresh_token", new CookieOptions
+            {
+                Path = "/",
+                Secure = true,
+                HttpOnly = true,
+                SameSite = SameSiteMode.None
+            });
+
+            _httpContextAccessor.HttpContext?.Response.Cookies.Delete("access_token", new CookieOptions
+            {
+                Path = "/",
+                Secure = true,
+                HttpOnly = true,
+                SameSite = SameSiteMode.None
+            });
         }
     }
 }
