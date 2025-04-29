@@ -6,8 +6,10 @@ namespace LoLTeamSorter.API.Extensions
 {
     public static class AuthExtensions
     {
-        public static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
         {
+            var isDevelopment = env.IsDevelopment();
+
             const string claimType = "Permissions";
             var secretKey = Encoding.ASCII.GetBytes(configuration["TokenSettings:Secret"]!);
 
@@ -18,7 +20,7 @@ namespace LoLTeamSorter.API.Extensions
             })
             .AddJwtBearer(x =>
             {
-                x.RequireHttpsMetadata = false;
+                x.RequireHttpsMetadata = !isDevelopment;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -29,7 +31,23 @@ namespace LoLTeamSorter.API.Extensions
                     ClockSkew = TimeSpan.Zero,
                     ValidateLifetime = true
                 };
+
+                x.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Cookies["access_token"];
+                        if (!string.IsNullOrEmpty(accessToken))
+                        {
+                            context.Token = accessToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
             });
+
+
 
             var permissoes = new Dictionary<string, string[]>
             {

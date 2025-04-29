@@ -10,11 +10,18 @@ namespace LoLTeamSorter.Application.Commands.RevokeRefreshToken
     {
         public async Task<Unit> Handle(RevokeRefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            var refreshToken = await unitOfWork.RefreshTokens.GetSingleAsync(r => r.Token == request.refreshToken);
-            if (refreshToken == null) throw new RefreshTokenNotFoundException(request.refreshToken);
-            refreshToken.Revoke(currentUserService.IpAddress!);
+            var refreshToken = currentUserService.RefreshToken;
+            if (string.IsNullOrEmpty(refreshToken))
+                throw new RefreshTokenNotFoundException("refreshToken cookie not found");
 
+            var token = await unitOfWork.RefreshTokens.GetSingleAsync(r => r.Token == refreshToken);
+            if (token == null)
+                throw new RefreshTokenNotFoundException(refreshToken);
+
+            token.Revoke(currentUserService.IpAddress!);
             await unitOfWork.CompleteAsync();
+
+            currentUserService.RemoveCookiesToken();
 
             return Unit.Value;
         }

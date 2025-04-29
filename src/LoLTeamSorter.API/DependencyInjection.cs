@@ -24,7 +24,7 @@ namespace LoLTeamSorter.API
             services.AddCorsConfig(builder.Environment);
             services.AddCarter();
             services.AddJsonSerializationConfig();
-            services.AddAuthConfig(configuration);
+            services.AddAuthConfig(configuration, builder.Environment);
 
             services.AddExceptionHandler<CustomExceptionHandler>();
 

@@ -3,5 +3,5 @@ using LoLTeamSorter.Application.ViewModels;
 
 namespace LoLTeamSorter.Application.Commands.RenewRefreshToken
 {
-    public record RefreshTokenCommand(string refreshToken) : ICommand<AuthResponseViewModel>;
+    public record RefreshTokenCommand : ICommand<AuthResponseViewModel>;
 }

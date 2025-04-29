@@ -40,6 +40,8 @@ namespace LoLTeamSorter.Application.Commands.GenerateAccessToken
             await unitOfWork.RefreshTokens.AddAsync(refreshToken);
             await unitOfWork.CompleteAsync();
 
+            currentUserService.SetCookieTokens(authToken.AccessToken, authToken.RefreshToken);
+
             var viewModel = new AuthResponseViewModel(authToken.AccessToken, authToken.RefreshToken, authToken.RefreshTokenExpiresAt, userExists.ToViewModel(), null);
             return viewModel;
         }
