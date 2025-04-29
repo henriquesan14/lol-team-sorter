@@ -84,6 +84,8 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
             await unitOfWork.RefreshTokens.AddAsync(refreshToken);
             await unitOfWork.CompleteAsync();
 
+            currentUserService.SetCookieTokens(authToken.AccessToken, authToken.RefreshToken);
+
             return new AuthResponseViewModel
             (
                 AccessToken: authToken.AccessToken,
