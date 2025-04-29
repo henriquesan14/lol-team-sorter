@@ -11,6 +11,8 @@ namespace LoLTeamSorter.Domain.Enums
         [Description("User")]
         USER,
         [Description("Group")]
-        GROUP
+        GROUP,
+        [Description("Hangfire")]
+        HANGFIRE
     }
 }
