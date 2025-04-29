@@ -2,6 +2,7 @@
 using Hangfire;
 using Hangfire.PostgreSql;
 using LoLTeamSorter.Application.Contracts.Services;
+using LoLTeamSorter.API.Filters;
 
 namespace LoLTeamSorter.API.Extensions
 {
@@ -27,23 +28,7 @@ namespace LoLTeamSorter.API.Extensions
         {
             app.UseHangfireDashboard("/hangfire", new DashboardOptions
             {
-                Authorization = new[]
-                {
-                    new BasicAuthAuthorizationFilter(new BasicAuthAuthorizationFilterOptions
-                    {
-                        RequireSsl = false,
-                        SslRedirect = false,
-                        LoginCaseSensitive = true,
-                        Users = new[]
-                        {
-                            new BasicAuthAuthorizationUser
-                            {
-                                Login = configuration["Hangfire:Login"],
-                                PasswordClear = configuration["Hangfire:Password"]
-                            }
-                        }
-                    })
-                }
+                Authorization = new[] { new CookieAuthDashboardFilter() }
             });
 
             return app;
