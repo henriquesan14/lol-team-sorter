@@ -3,6 +3,7 @@ using LoLTeamSorter.Application.Commands.GenerateAccessToken;
 using LoLTeamSorter.Application.Commands.LoginDiscord;
 using LoLTeamSorter.Application.Commands.RenewRefreshToken;
 using LoLTeamSorter.Application.Commands.RevokeRefreshToken;
+using LoLTeamSorter.Application.ViewModels;
 using MediatR;
 
 namespace LoLTeamSorter.API.Endpoints
@@ -13,12 +14,14 @@ namespace LoLTeamSorter.API.Endpoints
         {
             var group = app.MapGroup("/api/auth");
 
-            group.MapPost("/", async (GenerateAccessTokenCommand command, ISender sender) =>
+            group.MapPost("/", async (GenerateAccessTokenCommand command, ISender sender, HttpResponse response) =>
             {
                 var result = await sender.Send(command);
 
-                return Results.Ok(result);
-            });
+                return Results.Ok(result.User);
+            })
+                .WithName("GenerateAccessToken")
+                .Produces<UserViewModel>(StatusCodes.Status200OK);
 
             group.MapGet("/discord/callback", async (string code, ISender sender) =>
             {
@@ -28,11 +31,11 @@ namespace LoLTeamSorter.API.Endpoints
                 return Results.Redirect(result.RedirectAppUrl!);
             });
 
-            group.MapPost("/refresh-token", async (RefreshTokenCommand command, ISender sender) =>
+            group.MapPost("/refresh-token", async (RefreshTokenCommand command, ISender sender, HttpResponse response) =>
             {
                 var result = await sender.Send(command);
 
-                return Results.Ok(result);
+                return Results.Ok(result.User);
             });
 
             group.MapPost("/logout", async (RevokeRefreshTokenCommand command, ISender sender) =>

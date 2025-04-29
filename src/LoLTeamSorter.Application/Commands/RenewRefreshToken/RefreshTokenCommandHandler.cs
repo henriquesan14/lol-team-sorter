@@ -14,8 +14,9 @@ namespace LoLTeamSorter.Application.Commands.RenewRefreshToken
     {
         public async Task<AuthResponseViewModel> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
+            var refreshToken = currentUserService.RefreshToken;
             var existingToken = await unitOfWork.RefreshTokens
-                .GetSingleAsync(rt => rt.Token == request.refreshToken);
+                .GetSingleAsync(rt => rt.Token == refreshToken);
 
             if (existingToken is null || existingToken.IsExpired || existingToken.IsRevoked)
             {
@@ -43,6 +44,8 @@ namespace LoLTeamSorter.Application.Commands.RenewRefreshToken
 
             await unitOfWork.RefreshTokens.AddAsync(newRefreshToken);
             await unitOfWork.CompleteAsync();
+
+            currentUserService.SetCookieTokens(authToken.AccessToken, authToken.RefreshToken);
 
             var response = new AuthResponseViewModel(
                 AccessToken: authToken.AccessToken,

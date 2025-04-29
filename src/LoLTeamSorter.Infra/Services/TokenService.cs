@@ -15,7 +15,7 @@ namespace LoLTeamSorter.Infra.Services
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["TokenSettings:Secret"]!);
-            var accessTokenExpiration = DateTime.Now.AddHours(12);
+            var accessTokenExpiration = DateTime.Now.AddHours(1);
             var refreshTokenExpiration = DateTime.Now.AddDays(7);
 
             var tokenDescriptor = new SecurityTokenDescriptor

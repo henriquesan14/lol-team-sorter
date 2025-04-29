@@ -2,7 +2,7 @@
 
 namespace LoLTeamSorter.Application.Commands.RevokeRefreshToken
 {
-    public record RevokeRefreshTokenCommand(string refreshToken) : ICommand
+    public record RevokeRefreshTokenCommand : ICommand
     {
     }
 }

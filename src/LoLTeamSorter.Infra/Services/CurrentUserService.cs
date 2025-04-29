@@ -42,5 +42,43 @@ namespace LoLTeamSorter.Infra.Services
                 return httpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString();
             }
         }
+
+        public string? RefreshToken
+        {
+            get
+            {
+                var refreshToken = _httpContextAccessor.HttpContext?.Request.Cookies["refresh_token"];
+                return refreshToken;
+            }
+        }
+
+        public void SetCookieTokens(string accessToken, string refreshToken)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            if (httpContext == null)
+                return;
+
+            httpContext.Response.Cookies.Append("access_token", accessToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddHours(1)
+            });
+
+            httpContext.Response.Cookies.Append("refresh_token", refreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(7)
+            });
+        }
+
+        public void RemoveCookiesToken()
+        {
+            _httpContextAccessor.HttpContext?.Response.Cookies.Delete("refresh_token");
+            _httpContextAccessor.HttpContext?.Response.Cookies.Delete("access_token");
+        }
     }
 }
