@@ -3,5 +3,5 @@ using LoLTeamSorter.Application.ViewModels;
 
 namespace LoLTeamSorter.Application.Commands.GenerateAccessToken
 {
-    public record GenerateAccessTokenCommand(string? Username, string? Password) : ICommand<AuthResponseViewModel>;
+    public record GenerateAccessTokenCommand(string? Username, string? Password) : ICommand<UserViewModel>;
 }

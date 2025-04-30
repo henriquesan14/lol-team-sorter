@@ -88,31 +88,22 @@ namespace LoLTeamSorter.Application.Commands.LoginDiscord
 
             return new AuthResponseViewModel
             (
-                AccessToken: authToken.AccessToken,
-                RefreshToken: authToken.RefreshToken,
-                RefreshTokenExpiresAt: authToken.RefreshTokenExpiresAt,
                 User: user.ToViewModel(),
-                RedirectAppUrl: GenerateRedirectUrl(authToken.AccessToken, authToken.RefreshToken, authToken.RefreshTokenExpiresAt, user)
+                RedirectAppUrl: GenerateRedirectUrl(user)
             );
         }
 
         private bool HasAvatar(DiscordUserResponse userDiscord) =>
     !       string.IsNullOrEmpty(userDiscord.Avatar);
 
-        private string GenerateRedirectUrl(string accessToken, string refreshToken, DateTime refreshTokenExpiresAt, User user)
+        private string GenerateRedirectUrl(User user)
         {
             var options = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
 
-            var json = JsonSerializer.Serialize(new
-            {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken,
-                RefreshTokenExpiresAt = refreshTokenExpiresAt,
-                User = user.ToViewModel()
-            }, options);
+            var json = JsonSerializer.Serialize(user.ToViewModel(), options);
 
             var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
 

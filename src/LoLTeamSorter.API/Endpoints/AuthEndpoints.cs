@@ -18,7 +18,7 @@ namespace LoLTeamSorter.API.Endpoints
             {
                 var result = await sender.Send(command);
 
-                return Results.Ok(result.User);
+                return Results.Ok(result);
             })
                 .WithName("GenerateAccessToken")
                 .Produces<UserViewModel>(StatusCodes.Status200OK);
@@ -35,7 +35,7 @@ namespace LoLTeamSorter.API.Endpoints
             {
                 var result = await sender.Send(command);
 
-                return Results.Ok(result.User);
+                return Results.Ok(result);
             });
 
             group.MapPost("/logout", async (RevokeRefreshTokenCommand command, ISender sender) =>

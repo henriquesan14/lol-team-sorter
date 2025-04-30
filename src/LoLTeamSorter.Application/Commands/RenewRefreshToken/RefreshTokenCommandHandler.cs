@@ -10,9 +10,9 @@ using System.Linq.Expressions;
 
 namespace LoLTeamSorter.Application.Commands.RenewRefreshToken
 {
-    public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, ICurrentUserService currentUserService) : ICommandHandler<RefreshTokenCommand, AuthResponseViewModel>
+    public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, ICurrentUserService currentUserService) : ICommandHandler<RefreshTokenCommand, UserViewModel>
     {
-        public async Task<AuthResponseViewModel> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<UserViewModel> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
             var refreshToken = currentUserService.RefreshToken;
             var existingToken = await unitOfWork.RefreshTokens
@@ -47,15 +47,7 @@ namespace LoLTeamSorter.Application.Commands.RenewRefreshToken
 
             currentUserService.SetCookieTokens(authToken.AccessToken, authToken.RefreshToken);
 
-            var response = new AuthResponseViewModel(
-                AccessToken: authToken.AccessToken,
-                RefreshToken: newRefreshToken.Token,
-                RefreshTokenExpiresAt: newRefreshToken.ExpiresAt,
-                User: user.ToViewModel(),
-                RedirectAppUrl: null
-            );
-
-            return response;
+            return user.ToViewModel();
         }
     }
 }
