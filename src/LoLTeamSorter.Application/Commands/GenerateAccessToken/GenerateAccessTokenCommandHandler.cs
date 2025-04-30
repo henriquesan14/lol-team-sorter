@@ -10,9 +10,9 @@ using System.Linq.Expressions;
 
 namespace LoLTeamSorter.Application.Commands.GenerateAccessToken
 {
-    public class GenerateAccessTokenCommandHandler(ITokenService tokenService, IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : ICommandHandler<GenerateAccessTokenCommand, AuthResponseViewModel>
+    public class GenerateAccessTokenCommandHandler(ITokenService tokenService, IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : ICommandHandler<GenerateAccessTokenCommand, UserViewModel>
     {
-        public async Task<AuthResponseViewModel> Handle(GenerateAccessTokenCommand request, CancellationToken cancellationToken)
+        public async Task<UserViewModel> Handle(GenerateAccessTokenCommand request, CancellationToken cancellationToken)
         {
             Expression<Func<User, bool>> predicate = u => u.Username == Username.Of(request.Username!);
             List<Expression<Func<User, object>>> includes = new List<Expression<Func<User, object>>>
@@ -42,8 +42,7 @@ namespace LoLTeamSorter.Application.Commands.GenerateAccessToken
 
             currentUserService.SetCookieTokens(authToken.AccessToken, authToken.RefreshToken);
 
-            var viewModel = new AuthResponseViewModel(authToken.AccessToken, authToken.RefreshToken, authToken.RefreshTokenExpiresAt, userExists.ToViewModel(), null);
-            return viewModel;
+            return userExists.ToViewModel();
         }
     }
 }
