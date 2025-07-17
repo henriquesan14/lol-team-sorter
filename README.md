@@ -61,7 +61,7 @@ $ cd src/LoLTeamSorter.API
 # Execute a aplicação com o comando do dotnet
 $ dotnet run
 
-# A API iniciará na porta:5000 com HTTP e na porta:5001 com HTTPS - acesse <http://localhost:5001>
+# A API iniciará na porta:5000 com HTTP
 ```
 
 ### Autor
